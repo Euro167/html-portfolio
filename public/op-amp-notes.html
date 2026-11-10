@@ -390,7 +390,7 @@ html{scroll-behavior:smooth}
     <div class="eq"><i>V</i><sub>o</sub> = <i>V</i><sub>i</sub>·<span class="fr"><span><i>R</i><sub>L</sub></span><span><i>R</i><sub>s</sub> + <i>R</i><sub>L</sub></span></span> &lt; <i>V</i><sub>i</sub> ⇒ <i>V</i><sub>o</sub> ↓<span class="why">這就是負載效應</span></div>
     <div class="eq">例：<i>R</i><sub>s</sub> = <i>R</i><sub>L</sub> = 1 kΩ ⇒ <i>V</i><sub>o</sub> = <i>V</i><sub>i</sub> × <span class="fr"><span>1 kΩ</span><span>1 kΩ + 1 kΩ</span></span> = <i>V</i><sub>i</sub> × <span class="fr"><span>1</span><span>2</span></span></div>
   </div>
-  <p class="note"><strong>fan-out 不夠（白板左邊紅字「100 個電路」）：</strong>一個訊號源要同時推 100 個電路，這 100 個輸入電阻是<strong>並聯</strong>，總負載變得很小。假設每個電路輸入電阻 10 kΩ、R<sub>s</sub> = 1 kΩ：<br>R<sub>L</sub> = 10 kΩ / 100 = 100 Ω<br>V<sub>o</sub> = V<sub>i</sub> × 100 Ω / (1000 Ω + 100 Ω) = V<sub>i</sub> × 100/1100 ≈ 0.091 V<sub>i</sub>，只剩不到一成，後面的電路都收不到正確的電壓。<br>中間加一顆 buffer：訊號源只看到 OP 的 + 端（R<sub>i</sub> = ∞，不用出電流，V<sub>i</sub> 完整保留），100 個電路改由 OP 輸出（R<sub>o</sub> = 0）來推，每個都拿到 V<sub>i</sub>。<br><span style="font-size:.88em">（白板左邊還有「推人」「哪裡來」和一個二極體的小圖，照片只拍到一半，我看不出完整意思，就沒有寫進來。）</span></p>
+  <p class="note"><strong>fan-out 不夠（白板左邊紅字「100 個電路」）：</strong>一個訊號源要同時推 100 個電路，這 100 個輸入電阻是<strong>並聯</strong>，總負載變得很小。假設每個電路輸入電阻 10 kΩ、R<sub>s</sub> = 1 kΩ：<br>R<sub>L</sub> = 10 kΩ / 100 = 100 Ω<br>V<sub>o</sub> = V<sub>i</sub> × 100 Ω / (1000 Ω + 100 Ω) = V<sub>i</sub> × 100/1100 ≈ 0.091 V<sub>i</sub>，只剩不到一成，後面的電路都收不到正確的電壓。<br>中間加一顆 buffer：訊號源只看到 OP 的 + 端（R<sub>i</sub> = ∞，不用出電流，V<sub>i</sub> 完整保留），100 個電路改由 OP 輸出（R<sub>o</sub> = 0）來推，每個都拿到 V<sub>i</sub>。<br><span style="font-size:.88em">（白板左邊被切掉的紅字還有「推人」「哪裡來」和一個標了 V<sub>cc</sub> 的三角形小圖。這個三角形比較像數位電路的緩衝器／邏輯閘符號，不是二極體。整句應該就是「一顆閘要推 100 個電路，fan out 不夠」，左半邊沒拍到，細節看不出來。）</span></p>
   <aside class="fix">
     <b class="h">筆記勘誤（p.37）</b>
     <ul><li>筆記寫「過路費 I·R<sub>s</sub> = 0·R<sub>s</sub>，<strong>R<sub>s</sub> = 0</strong>」。R<sub>s</sub> 本身不是 0，是 <strong>R<sub>s</sub> 上的壓降</strong>為 0：<span class="m">V<sub>Rs</sub> = I·R<sub>s</sub> = 0·R<sub>s</sub> = 0</span>。</li><li>對照新的白板照片：老師寫的是「I·R<sub>s</sub> = 0·R<sub>s</sub>」，下一行「= 0」，再下面那個「R<sub>s</sub>」其實是電阻的標籤。抄的時候兩個黏在一起，就變成「R<sub>s</sub> = 0」了。</li></ul>
@@ -447,7 +447,7 @@ html{scroll-behavior:smooth}
       <div class="eq res"><i>V</i><sub>o</sub> = <i>V</i><sub>o1</sub> + <i>V</i><sub>o2</sub></div>
     </div>
   </div>
-  <p class="note"><strong>為什麼「V₂ 關掉」不會影響 V₁ 的那一半：</strong>V₂ 短路接地後，R<sub>2</sub> 一端是 0 V（地）、另一端也是 0 V（虛接地），兩端沒電壓差 → 沒電流 → 就像不存在，電路變回單純的反相放大器。<br>補充：重疊定理裡，<strong>電壓源關掉 = 短路</strong>，電流源關掉 = 開路。<br><strong>白板寫法：</strong>V<sub>o</sub> = V<sub>1</sub>·(−R<sub>f</sub>/R<sub>1</sub>) + V<sub>2</sub>·(−R<sub>f</sub>/R<sub>2</sub>) = −(V<sub>1</sub>·係 + V<sub>2</sub>·係)，「係」就是係數 R<sub>f</sub>/R<sub>1</sub>、R<sub>f</sub>/R<sub>2</sub>。白板下方還有藍字「平方、+、…」，用箭頭指向係數，我看不清楚。推測是在說 OP 電路還能做相加、平方等其他運算，這點請自己確認。</p>
+  <p class="note"><strong>為什麼「V₂ 關掉」不會影響 V₁ 的那一半：</strong>V₂ 短路接地後，R<sub>2</sub> 一端是 0 V（地）、另一端也是 0 V（虛接地），兩端沒電壓差 → 沒電流 → 就像不存在，電路變回單純的反相放大器。<br>補充：重疊定理裡，<strong>電壓源關掉 = 短路</strong>，電流源關掉 = 開路。<br><strong>白板寫法：</strong>V<sub>o</sub> = V<sub>1</sub>·(−R<sub>f</sub>/R<sub>1</sub>) + V<sub>2</sub>·(−R<sub>f</sub>/R<sub>2</sub>) = −(V<sub>1</sub>·係 + V<sub>2</sub>·係)，「係」就是係數 R<sub>f</sub>/R<sub>1</sub>、R<sub>f</sub>/R<sub>2</sub>。</p>
   <aside class="fix">
     <b class="h">筆記勘誤（p.38）</b>
     <ul><li>對照白板「△ 加法器」那張：匯合線和 − 端之間寫的是「0V」（標示虛接地），不是電阻。筆記很可能把這個手寫的「0V」抄成了一顆電阻。</li><li>電路圖上 V<sub>1</sub>-R<sub>1</sub>、V<sub>2</sub>-R<sub>2</sub> 匯合之後，又多串了一顆電阻才接到 − 端。標準加法器沒有這顆，R<sub>1</sub>、R<sub>2</sub> 要<strong>直接接到 − 端節點</strong>。多串一顆的話，匯合點就不是 0 V，V<sub>1</sub>、V<sub>2</sub> 的電流會互相影響，<span class="m">V<sub>o</sub> = −(R<sub>f</sub>/R<sub>1</sub>·V<sub>1</sub> + R<sub>f</sub>/R<sub>2</sub>·V<sub>2</sub>)</span> 就不成立了。</li></ul>
@@ -569,6 +569,14 @@ html{scroll-behavior:smooth}
     <div class="eq"><i>R</i><sub>i</sub> = <span class="fr"><span><i>V</i><sub>x</sub></span><span>②</span></span> = <span class="fr"><span><i>V</i><sub>o</sub>/2</span><span>−<i>V</i><sub>o</sub>/(2<i>R</i>)</span></span> = <span class="fr"><span><i>V</i><sub>o</sub></span><span>2</span></span>·<span class="fr"><span>2<i>R</i></span><span>−<i>V</i><sub>o</sub></span></span></div>
     <div class="eq res"><span class="box"><i>R</i><sub>i</sub> = −<i>R</i></span><span class="why">電壓為正，電流卻是「流出來」的 → 負電阻</span></div>
     <div class="eq">一般式（r₁ ≠ r₂）：<i>V</i><sub>o</sub> = <i>V</i><sub>x</sub>(1 + <span class="fr"><span><i>r</i><sub>2</sub></span><span><i>r</i><sub>1</sub></span></span>) ⇒ <i>R</i><sub>i</sub> = −<i>R</i>·<span class="fr"><span><i>r</i><sub>1</sub></span><span><i>r</i><sub>2</sub></span></span></div>
+    <span class="t">白板例子：7 kΩ → −1 kΩ（r₁、r₂ 的值是我推的）</span>
+    <div class="eq"><i>R</i> = 7 kΩ，要 <i>R</i><sub>i</sub> = −1 kΩ</div>
+    <div class="eq">−7 kΩ·<span class="fr"><span><i>r</i><sub>1</sub></span><span><i>r</i><sub>2</sub></span></span> = −1 kΩ ⇒ <span class="fr"><span><i>r</i><sub>1</sub></span><span><i>r</i><sub>2</sub></span></span> = <span class="fr"><span>1 kΩ</span><span>7 kΩ</span></span> = <span class="fr"><span>1</span><span>7</span></span></div>
+    <div class="eq">接法一：<i>r</i><sub>1</sub> = 1 kΩ、<i>r</i><sub>2</sub> = 7 kΩ</div>
+    <div class="eq">驗算：<i>V</i><sub>o</sub> = <i>V</i><sub>x</sub>(1 + <span class="fr"><span>7 kΩ</span><span>1 kΩ</span></span>) = <i>V</i><sub>x</sub>(1 + 7) = 8<i>V</i><sub>x</sub></div>
+    <div class="eq">② = <span class="fr"><span><i>V</i><sub>x</sub> − 8<i>V</i><sub>x</sub></span><span>7 kΩ</span></span> = <span class="fr"><span>−7<i>V</i><sub>x</sub></span><span>7 kΩ</span></span> = <span class="fr"><span>−<i>V</i><sub>x</sub></span><span>1 kΩ</span></span></div>
+    <div class="eq res"><i>R</i><sub>i</sub> = <span class="fr"><span><i>V</i><sub>x</sub></span><span>②</span></span> = <i>V</i><sub>x</sub> ÷ <span class="fr"><span>−<i>V</i><sub>x</sub></span><span>1 kΩ</span></span> = −1 kΩ ✓</div>
+    <div class="eq">接法二（如果白板 r₂ 上方的「1k」是 r₂）：<i>r</i><sub>2</sub> = 1 kΩ ⇒ <i>r</i><sub>1</sub> = <span class="fr"><span>1 kΩ</span><span>7</span></span> ≈ 142.9 Ω</div>
   </div>
 
   <h3>Norton 等效：為什麼電流固定</h3>
@@ -597,7 +605,7 @@ html{scroll-behavior:smooth}
   <aside class="fix">
     <b class="h">要注意的地方</b>
     <ul>
-      <li>新照片比較清楚：標題寫「電阻 7k → −1k」，「7k」底下又寫了一個「1k」。我判斷應該是 1k → −1k（7 可能是 1 的寫法，或是被改過）。依電路原理，r<sub>1</sub> = r<sub>2</sub> 時是 <strong>R → −R</strong>，例如 1 kΩ → −1 kΩ。建議跟同學或老師確認原本寫的數字。</li>
+      <li>白板標題「電阻 7k → −1k」：數字就是 7k 和 −1k。上面的推導是 r<sub>1</sub> = r<sub>2</sub> 的特例（R → −R）；7k 變 −1k 要用「一般式」，r<sub>1</sub>/r<sub>2</sub> = 1/7（見上面的例子）。白板上 r<sub>2</sub> 正上方的「1k」是不是在標 r<sub>2</sub>，我不確定，所以兩種接法都列了。</li>
       <li>R ∥ (−R) 的分母是 0，嚴格來說不是「除出 ∞」，用電導相加 1/R + 1/(−R) = 0 → 開路，寫起來比較不會被扣分。</li>
     </ul>
   </aside>
@@ -782,7 +790,7 @@ html{scroll-behavior:smooth}
     <li><span class="where">p.37 電壓隨耦器</span><span>「R<sub>s</sub> = 0」→ 應為「R<sub>s</sub> 上的壓降 I·R<sub>s</sub> = 0」（電阻標籤 R<sub>s</sub> 和下一行「= 0」被抄在一起了）。</span></li>
     <li><span class="where">p.38 反相加法器</span><span>R<sub>1</sub>、R<sub>2</sub> 匯合後多串的那顆電阻要拿掉，否則公式不成立（白板那個位置寫的是「0V」標示）。</span></li>
     <li><span class="where">p.39 減法器</span><span>V<sub>2</sub> 直接接 + 端只得到 −V<sub>1</sub> + 2V<sub>2</sub>（R<sub>f</sub> = R<sub>1</sub> 時），要加 R<sub>2</sub> = R<sub>3</sub> 分壓才是 V<sub>2</sub> − V<sub>1</sub>；圖上 V<sub>1</sub>、R<sub>1</sub>、R<sub>f</sub> 沒標。</span></li>
-    <li><span class="where">白板 負阻抗</span><span>「7k → −1k」看不清楚，原理上是 R → −R（1 kΩ → −1 kΩ），請確認。</span></li>
+    <li><span class="where">白板 負阻抗</span><span>「7k → −1k」不是 r<sub>1</sub> = r<sub>2</sub> 的情況，要 r<sub>1</sub>/r<sub>2</sub> = 1/7（例如 r<sub>1</sub> = 1 kΩ、r<sub>2</sub> = 7 kΩ）。這是我依公式推的，白板沒有寫出 r<sub>1</sub>、r<sub>2</sub> 的值。</span></li>
     <li><span class="where">白板 積分器</span><span>最後一行負號要寫清楚：−(1/C)∫I<sub>c</sub>dt。</span></li>
     <li><span class="where">白板 指數放大</span><span>只在 V<sub>i</sub> &gt; 0（順偏）成立；nV<sub>T</sub>、I<sub>s</sub> 隨溫度變。</span></li>
   </ol>
