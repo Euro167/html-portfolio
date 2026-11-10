@@ -108,6 +108,18 @@ tr:last-child td{border-bottom:none}
 td a{color:var(--accent);text-decoration:none;font-weight:500}
 .pair{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px}
 .pair>*{min-width:0}
+.trio{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.trio>*{min-width:0}
+.trio svg.ckt{min-width:0;max-width:300px}
+.ckt .fbn{fill:none;stroke:var(--vs);stroke-width:3.4}
+.ckt .fbp{fill:none;stroke:var(--cur);stroke-width:3.4}
+.ckt .wall{fill:none;stroke:var(--cur);stroke-width:6;stroke-linecap:butt}
+table.mini{min-width:0}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.cards>div{background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:12px 14px;display:flex;flex-direction:column;gap:4px;min-width:0}
+.cards b{font-family:var(--f-display);font-size:1.05rem}
+.baby{background:var(--paper);border:1px dashed var(--accent);border-radius:6px;padding:12px 16px;display:flex;flex-direction:column;gap:6px}
+.baby .tag{font-family:var(--f-mono);font-size:.74rem;letter-spacing:.1em;color:var(--accent);text-transform:uppercase}
 .errata{counter-reset:e;display:flex;flex-direction:column;gap:12px;margin:0;padding:0;list-style:none}
 .errata li{background:var(--paper);border:1px solid var(--line);border-left:4px solid var(--warn-line);border-radius:6px;padding:12px 14px;display:flex;flex-direction:column;gap:4px}
 .errata .where{font-family:var(--f-mono);font-size:.76rem;color:var(--warn-ink);letter-spacing:.06em}
@@ -148,6 +160,48 @@ html{scroll-behavior:smooth}
 <!-- ============ 0 BASICS ============ -->
 <section id="basics">
   <div class="sec-head"><span class="eyebrow">§0 先備觀念</span><h2>理想 OP 與兩大法寶</h2><span class="en">Operational amplifier</span></div>
+  <h3>先看這裡：電路圖符號小字典</h3>
+  <figure>
+    <svg class="ckt" viewBox="0 0 540 215" role="img" aria-label="電路符號小字典">
+      <use href="#res" x="30" y="45"/>
+      <use href="#cap" x="150" y="45"/>
+      <use href="#dio" x="270" y="45"/>
+      <path class="w" d="M410 22 V32"/><use href="#gnd" x="410" y="32"/>
+      <text x="50" y="82" class="zh" text-anchor="middle">電阻 R</text><text x="50" y="100" class="zh sm mut" text-anchor="middle">擋電流（像細水管）</text>
+      <text x="170" y="82" class="zh" text-anchor="middle">電容 C</text><text x="170" y="100" class="zh sm mut" text-anchor="middle">存電荷（像水箱）</text>
+      <text x="290" y="82" class="zh" text-anchor="middle">二極體 D</text><text x="290" y="100" class="zh sm mut" text-anchor="middle">電流只能往尖端走</text>
+      <text x="410" y="82" class="zh" text-anchor="middle">接地</text><text x="410" y="100" class="zh sm mut" text-anchor="middle">電壓 = 0 V（基準點）</text>
+      <path class="w" d="M54 150 H90"/><circle class="term" cx="50" cy="150" r="4"/>
+      <text x="62" y="185" class="zh" text-anchor="middle">空心圈＝端點</text><text x="62" y="203" class="zh sm mut" text-anchor="middle">訊號從這裡進出</text>
+      <path class="w" d="M160 150 H220 M190 128 V150"/><circle class="dot" cx="190" cy="150" r="3.5"/>
+      <text x="190" y="185" class="zh" text-anchor="middle">實心點＝接在一起</text><text x="190" y="203" class="zh sm mut" text-anchor="middle">同一個點，電壓一樣</text>
+      <use href="#op" transform="translate(262 115) scale(0.5)" stroke-width="4"/>
+      <path class="w" d="M247 132.5 H262 M247 167.5 H262 M327 150 H342"/>
+      <text x="352" y="138" class="zh">OP（運算放大器）</text>
+      <text x="352" y="158" class="zh sm mut">左上 −：反相輸入</text>
+      <text x="352" y="176" class="zh sm mut">左下 +：非反相輸入</text>
+      <text x="352" y="194" class="zh sm mut">右邊尖端：輸出 Vo</text>
+    </svg>
+  </figure>
+
+  <div class="baby">
+    <span class="tag">機械系翻譯：把電路想成水管</span>
+    <div class="tablewrap" style="border:none">
+      <table class="mini">
+        <thead><tr><th>電子學</th><th>水管系統</th></tr></thead>
+        <tbody>
+          <tr><td>電壓 V</td><td>水壓（壓力差才會推水流動）</td></tr>
+          <tr><td>電流 I</td><td>水的流量</td></tr>
+          <tr><td>電阻 R</td><td>細水管／閥門：越細越難流，V = I·R 就像「壓降 = 流量 × 阻力」</td></tr>
+          <tr><td>接地 0 V</td><td>大氣壓／海平面：大家量壓力的基準</td></tr>
+          <tr><td>電容 C</td><td>水箱：水位就是電壓，進水流量就是電流，所以水位變化率 = 流量 / 截面積（dV/dt = i/C）</td></tr>
+          <tr><td>OP</td><td>一個超靈敏的自動閥門：只看兩根輸入管的壓力差，差一點點就把輸出開到最大</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <h3>OP 本身在做什麼</h3>
   <p>OP 本身就是一個「增益超大的差動放大器」：它只看兩個輸入端的電壓差，然後放大 <span class="m">A<sub>v</sub></span> 倍。</p>
   <div class="deriv"><div class="eq"><i>V</i><sub>o</sub> = <i>A</i><sub>v</sub>(<i>v</i><sup>+</sup> − <i>v</i><sup>−</sup>)</div></div>
 
@@ -184,17 +238,118 @@ html{scroll-behavior:smooth}
     </figure>
   </div>
 
+  <h3>回授長什麼樣子：從輸出往回找</h3>
+  <p>「回授」就是把輸出接一條線（或經過電阻、電容）<strong>繞回輸入端</strong>。判斷方法只有一步：用手指從輸出 V<sub>o</sub> 沿著線往回走，看最後回到哪一個輸入腳。</p>
+  <div class="trio">
+    <figure>
+      <svg class="ckt" viewBox="0 0 260 210" role="img" aria-label="開迴路：沒有回授">
+        <use href="#op" x="60" y="40"/>
+        <path class="w" d="M20 75 H60 M20 145 H60 M190 110 H236"/>
+        <circle class="term" cx="16" cy="75" r="4"/><circle class="term" cx="16" cy="145" r="4"/><circle class="term" cx="240" cy="110" r="4"/>
+        <text x="125" y="200" class="zh mut" text-anchor="middle">輸出沒有接回去</text>
+      </svg>
+      <figcaption><b>沒有回授（開迴路）</b><br>差一點點就爆衝到 ±3 V 飽和。這是比較器，不能用虛短路。</figcaption>
+    </figure>
+    <figure>
+      <svg class="ckt" viewBox="0 0 260 210" role="img" aria-label="負回授：輸出接回負端">
+        <use href="#op" x="60" y="40"/>
+        <path class="w" d="M20 145 H60 M190 110 H236"/>
+        <path class="fbn" d="M60 75 H40 V22 H210 V110"/>
+        <circle class="dot" cx="210" cy="110" r="3.5"/>
+        <circle class="term" cx="16" cy="145" r="4"/><circle class="term" cx="240" cy="110" r="4"/>
+        <text x="125" y="15" class="zh vs-t" text-anchor="middle">繞回 − 端</text>
+      </svg>
+      <figcaption><b class="g">負回授 ✓</b><br>輸出繞回 <strong>−</strong> 端。本份筆記所有電路都是這種，可以用虛短路。</figcaption>
+    </figure>
+    <figure>
+      <svg class="ckt" viewBox="0 0 260 210" role="img" aria-label="正回授：輸出接回正端">
+        <use href="#op" x="60" y="40"/>
+        <path class="w" d="M20 75 H60 M190 110 H236"/>
+        <path class="fbp" d="M60 145 H40 V192 H210 V110"/>
+        <circle class="dot" cx="210" cy="110" r="3.5"/>
+        <circle class="term" cx="16" cy="75" r="4"/><circle class="term" cx="240" cy="110" r="4"/>
+        <text x="125" y="207" class="zh cur-t" text-anchor="middle">繞回 + 端</text>
+      </svg>
+      <figcaption><b class="r">正回授 ✗</b><br>輸出繞回 <strong>+</strong> 端。越偏越推得更遠，最後飽和，不能用虛短路。</figcaption>
+    </figure>
+  </div>
+  <div class="baby">
+    <span class="tag">生活類比</span>
+    <p><strong>負回授＝冷氣恆溫／汽車定速巡航：</strong>太熱就開大、太冷就關小，「偏多少就往反方向拉回多少」，所以會穩定在目標值。</p>
+    <p><strong>正回授＝麥克風對著喇叭：</strong>聲音被放大又收進麥克風再放大，「偏一點就推更遠」，最後變成刺耳的嘯叫（＝飽和）。</p>
+    <p class="note" style="border:none;padding:0">如果你修過自動控制：負回授就是「誤差 = 目標 − 實際」接回控制器。OP 的增益超大，所以穩態誤差幾乎是 0，這個「誤差 ≈ 0」就是下面的虛短路。</p>
+  </div>
+
   <h3>法寶一：虛斷路（管電流）</h3>
-  <p><span class="m">R<sub>i</sub> = ∞</span> → 兩個輸入端都不吃電流：<span class="m g">i<sup>+</sup> = i<sup>−</sup> = 0</span>。你筆記寫的「撞牆」就是這個：電流走到 OP 輸入腳進不去，只能改走旁邊的回授元件。</p>
+  <p>理想 OP 的輸入電阻 <span class="m">R<sub>i</sub> = ∞</span>。電阻無限大＝管子完全堵死，所以<strong>沒有任何電流能流進 OP 的兩隻輸入腳</strong>：<span class="m g">i<sup>+</sup> = i<sup>−</sup> = 0</span>。你筆記寫的「撞牆」就是這個意思。</p>
+  <figure>
+    <svg class="ckt" viewBox="0 0 460 220" role="img" aria-label="虛斷路示意：電流撞牆後改走回授電阻">
+      <use href="#op" x="220" y="60"/>
+      <path class="w" d="M44 95 H90 M130 95 H220 M190 95 V30 H250 M290 30 H380 V130 M350 130 H416 M220 165 H190 V178"/>
+      <use href="#res" x="90" y="95"/><use href="#res" x="250" y="30"/><use href="#gnd" x="190" y="178"/>
+      <circle class="dot" cx="190" cy="95" r="3.5"/><circle class="dot" cx="380" cy="130" r="3.5"/>
+      <circle class="term" cx="40" cy="95" r="4"/><circle class="term" cx="420" cy="130" r="4"/>
+      <path class="wall" d="M212 82 V108"/>
+      <text x="212" y="76" class="cur-t" text-anchor="middle">✗</text>
+      <path class="cur" d="M96 112 H150" marker-end="url(#arr)"/><text x="123" y="132" class="cur-t" text-anchor="middle">i</text>
+      <path class="cur" d="M178 88 V44" marker-end="url(#arr)"/>
+      <path class="cur" d="M256 46 H286" marker-end="url(#arr)"/>
+      <text x="246" y="70" class="zh sm cur-t">全部改走回授電阻</text>
+      <text x="228" y="118" class="zh sm cur-t">i⁻ = 0（撞牆）</text>
+      <text x="184" y="156" class="zh sm cur-t" text-anchor="end">i⁺ = 0</text>
+      <text x="30" y="100" text-anchor="end">V<tspan dy="4" font-size="11">i</tspan></text>
+      <text x="110" y="80" text-anchor="middle">R<tspan dy="4" font-size="11">1</tspan></text>
+      <text x="270" y="15" text-anchor="middle">R<tspan dy="4" font-size="11">2</tspan></text>
+      <text x="432" y="135">V<tspan dy="4" font-size="11">o</tspan></text>
+    </svg>
+    <figcaption>紅色粗線是「牆」：電流 i 走到 − 腳進不去，只能在節點轉彎，往上流過 R<sub>2</sub></figcaption>
+  </figure>
+  <p><strong>考試怎麼用：</strong>在 − 端那個節點寫 KCL 時，「流進 OP 的電流」直接寫 0。所以<strong>流進節點的電流 = 流出去走回授元件的電流</strong>（上圖：流過 R<sub>1</sub> 的 i ＝ 流過 R<sub>2</sub> 的 i）。</p>
 
   <h3>法寶二：虛短路（管電壓）</h3>
-  <p>只有在<strong>負回授</strong>（輸出有一條路接回 − 端）而且輸出沒有飽和時才能用：</p>
+  <p>一句話：<strong>有負回授時，OP 會自己調整輸出，讓 + 端和 − 端的電壓一樣</strong>：<span class="m g">v<sup>+</sup> = v<sup>−</sup></span>。為什麼？直接用最簡單的電壓隨耦器代數字算給你看。</p>
+  <figure>
+    <svg class="ckt" viewBox="0 0 470 210" role="img" aria-label="虛短路數字示範：電壓隨耦器">
+      <use href="#op" x="220" y="60"/>
+      <path class="w" d="M64 165 H220 M350 130 H416"/>
+      <path class="fbn" d="M220 95 H190 V30 H380 V130"/>
+      <circle class="dot" cx="380" cy="130" r="3.5"/>
+      <circle class="term" cx="60" cy="165" r="4"/><circle class="term" cx="420" cy="130" r="4"/>
+      <path class="vs" d="M208 95 V165"/>
+      <text x="50" y="170" class="zh" text-anchor="end">Vi = 2 V</text>
+      <text x="186" y="156" class="zh vs-t" text-anchor="end">v⁺ = 2 V</text>
+      <text x="186" y="88" class="zh vs-t" text-anchor="end">v⁻ = Vo</text>
+      <text x="228" y="126" class="zh sm vs-t">兩端只差</text>
+      <text x="228" y="144" class="zh sm vs-t">0.00002 V</text>
+      <text x="356" y="154" class="zh">Vo ≈ 1.99998 V</text>
+      <text x="285" y="22" class="zh vs-t" text-anchor="middle">負回授：輸出直接接回 − 端</text>
+    </svg>
+    <figcaption>綠色粗線是回授線：它讓 v⁻ 永遠等於 V<sub>o</sub></figcaption>
+  </figure>
   <div class="deriv">
-    <div class="eq"><i>V</i><sub>o</sub> = <i>A</i><sub>v</sub>(<i>v</i><sup>+</sup> − <i>v</i><sup>−</sup>)</div>
-    <div class="eq">⇒ <i>v</i><sup>+</sup> − <i>v</i><sup>−</sup> = <span class="fr"><span><i>V</i><sub>o</sub></span><span><i>A</i><sub>v</sub></span></span> = <span class="fr"><span><i>V</i><sub>o</sub></span><span>∞</span></span> = 0 <span class="why">負回授讓 V<sub>o</sub> 是有限值（例如在 ±3 V 內）</span></div>
-    <div class="eq res">⇒ <i>v</i><sup>+</sup> = <i>v</i><sup>−</sup></div>
+    <span class="t">代數字：真實 OP 的 A<sub>v</sub> 大約 100000</span>
+    <div class="eq"><i>V</i><sub>o</sub> = <i>A</i><sub>v</sub>(<i>v</i><sup>+</sup> − <i>v</i><sup>−</sup>)<span class="why">OP 的基本公式</span></div>
+    <div class="eq"><i>v</i><sup>+</sup> = 2 V，<i>v</i><sup>−</sup> = <i>V</i><sub>o</sub><span class="why">+ 接輸入；− 被回授線接到輸出</span></div>
+    <div class="eq"><i>V</i><sub>o</sub> = 100000 × (2 − <i>V</i><sub>o</sub>)</div>
+    <div class="eq"><i>V</i><sub>o</sub> = 200000 − 100000<i>V</i><sub>o</sub></div>
+    <div class="eq"><i>V</i><sub>o</sub> + 100000<i>V</i><sub>o</sub> = 200000<span class="why">移項</span></div>
+    <div class="eq">100001<i>V</i><sub>o</sub> = 200000</div>
+    <div class="eq"><i>V</i><sub>o</sub> = <span class="fr"><span>200000</span><span>100001</span></span> ≈ 1.99998 V</div>
+    <div class="eq res"><i>v</i><sup>+</sup> − <i>v</i><sup>−</sup> = 2 − 1.99998 = 0.00002 V ≈ 0</div>
   </div>
-  <p>直觀理解：如果 <span class="m">v<sup>+</sup></span> 比 <span class="m">v<sup>−</sup></span> 高一點點，<span class="m">V<sub>o</sub></span> 就往上衝，再經過回授把 <span class="m">v<sup>−</sup></span> 拉高，差距變小；反過來也一樣。最後穩定在 <span class="m">v<sup>+</sup> ≈ v<sup>−</sup></span>。兩端電壓一樣，但中間沒有真的接起來（也沒有電流流過），所以叫「虛」短路。若 + 端接地，− 端就是 0 V，稱為<strong>虛接地</strong>。</p>
+  <p>兩端只差 0.00002 V，小到可以直接當成 0。A<sub>v</sub> 越大差距越小；理想 OP 的 A<sub>v</sub> = ∞，差距就剛好是 0，這就是 <span class="m g">v<sup>+</sup> = v<sup>−</sup></span>。</p>
+  <div class="baby">
+    <span class="tag">它是怎麼「自己調整」的</span>
+    <p>假設輸出一開始太小，V<sub>o</sub> = 1.9 V：兩端差 2 − 1.9 = 0.1 V，乘上 100000 = 10000 V，OP 拼命把輸出往上推。</p>
+    <p>假設輸出太大，V<sub>o</sub> = 2.1 V：兩端差 2 − 2.1 = −0.1 V，OP 拼命把輸出往下拉。</p>
+    <p>只有 V<sub>o</sub> 幾乎剛好等於 2 V 時才不推不拉，所以輸出會停在那裡。這就是負回授「偏多少拉回多少」。</p>
+  </div>
+  <p class="note"><strong>為什麼叫「虛」短路：</strong>兩端電壓一樣，就像用導線短路起來；但它們之間其實沒有接線，也沒有電流流過（虛斷路），所以是「虛」的。圖上都用綠色虛線表示。如果 + 端接地，− 端也會是 0 V，這叫<strong>虛接地</strong>。</p>
+
+  <div class="cards">
+    <div><b class="r">虛斷路：管「電流」</b><span>輸入腳不吃電流，i⁺ = i⁻ = 0。</span><span class="note" style="border:none;padding:0">永遠成立（因為 R<sub>i</sub> = ∞）</span></div>
+    <div><b class="g">虛短路：管「電壓」</b><span>兩個輸入腳電壓一樣，v⁺ = v⁻。</span><span class="note" style="border:none;padding:0">只有負回授時成立</span></div>
+  </div>
 
   <h3>所有 OP 題目的解題 SOP</h3>
   <ol class="steps">
