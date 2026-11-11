@@ -235,6 +235,58 @@ html{scroll-behavior:smooth}
     <figcaption>OP 電路的推導，幾乎都是在 − 端那個節點寫這條式子</figcaption>
   </figure>
 
+  <h3>重疊定理：有好幾個電源時怎麼算</h3>
+  <p>電路裡有兩個以上的電源（例如 V<sub>1</sub>、V<sub>2</sub>）時：</p>
+  <ol class="steps">
+    <li><div>一次只留一個電源，其他的<strong>電壓源換成一條導線接地</strong>（電壓 = 0，叫做「關掉」或「短路」）。電流源關掉則是拔掉（開路）。</div></li>
+    <li><div>算出只有這個電源時的輸出。</div></li>
+    <li><div>每個電源都算一次，最後把所有輸出<strong>相加</strong>，就是全部電源一起作用時的輸出。</div></li>
+  </ol>
+  <p class="note">這招只能用在「線性電路」（電阻、電容、在線性區工作的 OP）。反相加法器和減法器都用這招。白板寫的「V<sub>1</sub> 對 V<sub>o</sub> 的貢獻 ⇒ V<sub>2</sub> 關」就是第 1 步。</p>
+
+  <h3>輸入阻抗：「從某一點看進去」是什麼意思</h3>
+  <p>在電路的某個接點外加一個測試電壓 V，量流進去的電流 I。V 除以 I 就是從這一點「看進去」的電阻，叫<strong>輸入阻抗</strong>：<span class="m">R<sub>in</sub> = V / I</span>。不管裡面接了多複雜的東西，對外面來說它就跟一顆 R<sub>in</sub> 的電阻效果一樣，這就是「等效」。</p>
+  <figure>
+    <svg class="ckt" viewBox="0 0 460 150" role="img" aria-label="輸入阻抗的定義">
+      <circle class="w" cx="100" cy="95" r="18"/>
+      <text x="100" y="91" class="sm" text-anchor="middle">+</text><text x="100" y="109" class="sm" text-anchor="middle">−</text>
+      <path class="w" d="M100 77 V60 H216 M100 113 V122"/>
+      <use href="#gnd" x="100" y="122"/>
+      <rect class="w" x="220" y="30" width="160" height="90" rx="4"/>
+      <circle class="term" cx="220" cy="60" r="4"/>
+      <path class="cur" d="M135 46 H195" marker-end="url(#arr)"/>
+      <text x="165" y="38" class="cur-t" text-anchor="middle">I</text>
+      <text x="74" y="100" class="zh" text-anchor="end">外加 V</text>
+      <text x="300" y="72" class="zh" text-anchor="middle">裡面是某個電路</text>
+      <text x="300" y="98" class="zh acc-t" text-anchor="middle">R<tspan dy="4" font-size="10">in</tspan><tspan dy="-4"> = V / I</tspan></text>
+    </svg>
+    <figcaption>例：反相放大器從 V<sub>i</sub> 看進去，− 端被虛短路固定在 0 V，所以 I = (V<sub>i</sub> − 0)/R<sub>1</sub>，R<sub>in</sub> = V<sub>i</sub>/I = R<sub>1</sub>。負阻抗那一節的「−R」也是用這個方法算的。</figcaption>
+  </figure>
+  <p><strong>輸入阻抗越大越好的原因：</strong>R<sub>in</sub> 越大，同樣的電壓下 I 越小，訊號源被拉走的電流越少，訊號源的電壓就不會被拉低。理想 OP 的輸入腳 R<sub>in</sub> = ∞，完全不拉電流。</p>
+
+  <h3>輸出阻抗：輸出端內部的電阻</h3>
+  <p>任何輸出都可以看成「一個內部電壓源串一顆電阻 R<sub>o</sub>」。接上負載後有電流 I<sub>L</sub>，R<sub>o</sub> 上會掉 I<sub>L</sub>·R<sub>o</sub> 的電壓，所以輸出電壓會變低。</p>
+  <figure>
+    <svg class="ckt" viewBox="0 0 500 165" role="img" aria-label="輸出阻抗的定義">
+      <circle class="w" cx="80" cy="90" r="20"/>
+      <text x="80" y="86" class="sm" text-anchor="middle">+</text><text x="80" y="104" class="sm" text-anchor="middle">−</text>
+      <path class="w" d="M80 70 V40 H150 M190 40 H300 M300 40 V60 M300 100 V110 M80 110 V120"/>
+      <use href="#res" x="150" y="40"/>
+      <use href="#res" transform="translate(300 60) rotate(90)"/>
+      <use href="#gnd" x="300" y="110"/><use href="#gnd" x="80" y="120"/>
+      <circle class="dot" cx="300" cy="40" r="3.5"/>
+      <text x="170" y="24" text-anchor="middle">R<tspan dy="4" font-size="11">o</tspan></text>
+      <text x="300" y="26" text-anchor="middle">V<tspan dy="4" font-size="11">o</tspan></text>
+      <text x="312" y="85">R<tspan dy="4" font-size="11">L</tspan></text>
+      <path class="cur" d="M200 56 H260" marker-end="url(#arr)"/><text x="230" y="76" class="cur-t sm" text-anchor="middle">I<tspan dy="4" font-size="10">L</tspan></text>
+      <text x="80" y="152" class="zh sm mut" text-anchor="middle">內部電壓源</text>
+      <text x="345" y="60" class="zh">V<tspan dy="3" font-size="10">o</tspan><tspan dy="-3"> = 內部電壓 − I</tspan><tspan dy="3" font-size="10">L</tspan><tspan dy="-3">·R</tspan><tspan dy="3" font-size="10">o</tspan></text>
+      <text x="345" y="86" class="zh acc-t">R<tspan dy="3" font-size="10">o</tspan><tspan dy="-3"> = 0 ⇒ 不掉壓</tspan></text>
+      <text x="345" y="108" class="zh acc-t">⇒ V<tspan dy="3" font-size="10">o</tspan><tspan dy="-3"> 不受 R</tspan><tspan dy="3" font-size="10">L</tspan><tspan dy="-3"> 影響</tspan></text>
+    </svg>
+    <figcaption>理想 OP 的 R<sub>o</sub> = 0，所以後面接什麼負載，輸出電壓都不會被拉低。電壓隨耦器就是靠這一點。</figcaption>
+  </figure>
+
   <h3>另外兩個元件的公式</h3>
   <dl class="role">
     <dt>電容 C</dt><dd><span class="m">i = C·dV/dt</span>：電容的電流跟「它兩端電壓變化的速度」成正比。電壓變得越快，電流越大；電壓固定不變時，電流 = 0。積分器、微分器用的就是這條。</dd>
@@ -242,7 +294,12 @@ html{scroll-behavior:smooth}
   </dl>
 
   <h3>OP 本身在做什麼</h3>
-  <p>OP 本身就是一個「增益超大的差動放大器」：它只看兩個輸入端的電壓差，然後放大 <span class="m">A<sub>v</sub></span> 倍。</p>
+  <p>OP 是一個「差動放大器」：<strong>差動</strong>的意思是它只看兩個輸入端的<strong>電壓差</strong>（v<sup>+</sup> − v<sup>−</sup>），不管兩端各自是多少，然後把這個差放大 <span class="m">A<sub>v</sub></span> 倍。A<sub>v</sub> 非常大（真實 OP 大約 10<sup>5</sup>，理想 OP 當作 ∞）。</p>
+  <dl class="role">
+    <dt>開迴路增益</dt><dd>OP 自己、沒接任何回授時的放大倍數，就是 A<sub>v</sub>。</dd>
+    <dt>閉迴路增益</dt><dd>接上回授電阻之後，整個電路的 V<sub>o</sub>/V<sub>i</sub>，例如反相放大器的 −R<sub>2</sub>/R<sub>1</sub>。後面每一節算的「增益」都是這個。</dd>
+    <dt>飽和</dt><dd>OP 的輸出不可能超過電源電壓。輸出被頂在最大值（筆記裡是 ±3 V）時叫飽和，記作 ±V<sub>sat</sub>，這時 OP 已經不照 V<sub>o</sub> = A<sub>v</sub>(v<sup>+</sup> − v<sup>−</sup>) 運作。</dd>
+  </dl>
   <div class="deriv"><div class="eq"><i>V</i><sub>o</sub> = <i>A</i><sub>v</sub>(<i>v</i><sup>+</sup> − <i>v</i><sup>−</sup>)</div></div>
 
   <div class="pair">
@@ -288,7 +345,7 @@ html{scroll-behavior:smooth}
         <circle class="term" cx="16" cy="75" r="4"/><circle class="term" cx="16" cy="145" r="4"/><circle class="term" cx="240" cy="110" r="4"/>
         <text x="125" y="200" class="zh mut" text-anchor="middle">輸出沒有接回去</text>
       </svg>
-      <figcaption><b>沒有回授（開迴路）</b><br>差一點點就爆衝到 ±3 V 飽和。這是比較器，不能用虛短路。</figcaption>
+      <figcaption><b>沒有回授（開迴路）</b><br>差一點點就爆衝到 ±3 V 飽和。這種用法叫<strong>比較器</strong>：v<sup>+</sup> 比較大就輸出 +3 V，v<sup>−</sup> 比較大就輸出 −3 V，只用來判斷誰大。不能用虛短路。</figcaption>
     </figure>
     <figure>
       <svg class="ckt" viewBox="0 0 260 210" role="img" aria-label="負回授：輸出接回負端">
@@ -440,7 +497,7 @@ html{scroll-behavior:smooth}
 <section id="inv">
   <div class="sec-head"><span class="eyebrow">§1 · 老師畫兩顆星</span><h2>反相放大器</h2><span class="en">Inverting amplifier</span></div>
   <dl class="role">
-    <dt>作用</dt><dd>放大小訊號，輸出和輸入反相（差 180°）。增益只由兩顆電阻決定。</dd>
+    <dt>作用</dt><dd>把很小的電壓放大成夠大、能被後面電路讀取的電壓（例如感測器只有幾 mV 的輸出）。<strong>反相</strong>的意思是輸出跟輸入正負相反：V<sub>i</sub> 是正的，V<sub>o</sub> 就是負的；畫成波形就是上下顛倒（相位差 180°）。放大倍數只由 R<sub>2</sub>/R<sub>1</sub> 決定，跟 OP 本身的 A<sub>v</sub> 無關。</dd>
     <dt>原理</dt><dd>虛接地 ＋ 虛斷路：R<sub>1</sub> 的電流進不了 OP，只能全部流過 R<sub>2</sub>。</dd>
   </dl>
   <figure>
@@ -489,7 +546,7 @@ html{scroll-behavior:smooth}
 <section id="noninv">
   <div class="sec-head"><span class="eyebrow">§2</span><h2>正相放大器</h2><span class="en">Non-inverting amplifier</span></div>
   <dl class="role">
-    <dt>作用</dt><dd>放大小訊號，輸出和輸入同相，增益一定 ≥ 1。輸入阻抗 ∞，不會從訊號源拉電流。</dd>
+    <dt>作用</dt><dd>跟反相放大器一樣是放大訊號，差別有兩個：① <strong>同相</strong>，V<sub>i</sub> 正 V<sub>o</sub> 也正；② 訊號直接接 OP 的 + 腳，<strong>輸入阻抗 ∞</strong>，完全不從訊號源拉電流，所以訊號源的電壓不會被拉低（反相放大器的輸入阻抗只有 R<sub>1</sub>）。放大倍數一定 ≥ 1。</dd>
     <dt>原理</dt><dd>訊號直接進 + 端，虛短路把 − 端也拉到 V<sub>i</sub>；R<sub>1</sub>、R<sub>2</sub> 其實是一個分壓器。</dd>
   </dl>
   <figure>
@@ -515,24 +572,24 @@ html{scroll-behavior:smooth}
   <ol class="steps">
     <li><div>V<sub>i</sub> 直接接 + 端 → <span class="m">v<sup>+</sup> = V<sub>i</sub></span>。</div></li>
     <li><div><span class="g">虛短路</span> → <span class="m">v<sup>−</sup> = V<sub>i</sub></span>。</div></li>
-    <li><div>R<sub>1</sub> 一端接地（0 V）、一端是 V<sub>i</sub> → 電流 <span class="m">(0 − V<sub>i</sub>)/R<sub>1</sub></span>（從地流向節點的方向寫，所以是負值）。</div></li>
-    <li><div><span class="r">虛斷路</span> → 流過 R<sub>1</sub> 和 R<sub>2</sub> 的是同一個電流：<span class="m">(V<sub>i</sub> − V<sub>o</sub>)/R<sub>2</sub></span>。</div></li>
+    <li><div>R<sub>1</sub> 上端是 V<sub>i</sub>、下端接地 0 V，電流照圖上紅色箭頭從節點流到地：<span class="m">i = (V<sub>i</sub> − 0)/R<sub>1</sub></span>。</div></li>
+    <li><div><span class="r">虛斷路</span>：OP 不吃電流，所以流過 R<sub>1</sub> 的 i 一定是從 R<sub>2</sub> 流過來的（圖上兩個紅色箭頭是同一個電流）。R<sub>2</sub> 左端 V<sub>o</sub>、右端 V<sub>i</sub>：<span class="m">i = (V<sub>o</sub> − V<sub>i</sub>)/R<sub>2</sub></span>。</div></li>
   </ol>
   <div class="deriv">
-    <span class="t">推導（你的筆記寫到第一行，這裡補完）</span>
-    <div class="eq"><span class="fr"><span>0 − <i>V</i><sub>i</sub></span><span><i>R</i><sub>1</sub></span></span> = <span class="fr"><span><i>V</i><sub>i</sub> − <i>V</i><sub>o</sub></span><span><i>R</i><sub>2</sub></span></span></div>
-    <div class="eq">−<i>V</i><sub>i</sub>·<i>R</i><sub>2</sub> = (<i>V</i><sub>i</sub> − <i>V</i><sub>o</sub>)·<i>R</i><sub>1</sub><span class="why">兩邊同乘 R₁R₂</span></div>
-    <div class="eq">−<i>V</i><sub>i</sub><i>R</i><sub>2</sub> = <i>V</i><sub>i</sub><i>R</i><sub>1</sub> − <i>V</i><sub>o</sub><i>R</i><sub>1</sub></div>
+    <span class="t">推導（照圖上箭頭方向寫）</span>
+    <div class="eq"><span class="fr"><span><i>V</i><sub>i</sub> − 0</span><span><i>R</i><sub>1</sub></span></span> = <span class="fr"><span><i>V</i><sub>o</sub> − <i>V</i><sub>i</sub></span><span><i>R</i><sub>2</sub></span></span><span class="why">流過 R₁ 的 i ＝ 流過 R₂ 的 i</span></div>
+    <div class="eq"><i>V</i><sub>i</sub>·<i>R</i><sub>2</sub> = (<i>V</i><sub>o</sub> − <i>V</i><sub>i</sub>)·<i>R</i><sub>1</sub><span class="why">兩邊同乘 R₁R₂</span></div>
+    <div class="eq"><i>V</i><sub>i</sub><i>R</i><sub>2</sub> = <i>V</i><sub>o</sub><i>R</i><sub>1</sub> − <i>V</i><sub>i</sub><i>R</i><sub>1</sub></div>
     <div class="eq"><i>V</i><sub>o</sub><i>R</i><sub>1</sub> = <i>V</i><sub>i</sub><i>R</i><sub>1</sub> + <i>V</i><sub>i</sub><i>R</i><sub>2</sub><span class="why">移項</span></div>
     <div class="eq"><span class="fr"><span><i>V</i><sub>o</sub></span><span><i>V</i><sub>i</sub></span></span> = <span class="fr"><span><i>R</i><sub>1</sub> + <i>R</i><sub>2</sub></span><span><i>R</i><sub>1</sub></span></span></div>
     <div class="eq res"><span class="box"><i>A</i> = 1 + <span class="fr"><span><i>R</i><sub>2</sub></span><span><i>R</i><sub>1</sub></span></span></span></div>
   </div>
-  <p class="note"><strong>另一種想法（分壓）：</strong>OP 不吃電流，所以 R<sub>2</sub>、R<sub>1</sub> 是串聯分壓：<span class="m">v<sup>−</sup> = V<sub>o</sub>·R<sub>1</sub>/(R<sub>1</sub> + R<sub>2</sub>)</span>，再令它等於 V<sub>i</sub>，一樣得到 <span class="m">V<sub>o</sub>/V<sub>i</sub> = (R<sub>1</sub> + R<sub>2</sub>)/R<sub>1</sub></span>。<br><strong>例：</strong>R<sub>1</sub> = 1 kΩ、R<sub>2</sub> = 9 kΩ → A = 1 + 9 kΩ / 1 kΩ = 1 + 9 = 10。<br><strong>白板寫法：</strong>老師把回授電阻叫 R<sub>f</sub>：V<sub>o</sub> = (1 + R<sub>f</sub>/R<sub>1</sub>)V<sub>i</sub>，R<sub>f</sub> 跟這裡的 R<sub>2</sub> 是同一顆。這個電路也是下一節減法器裡「V<sub>2</sub> 那一半」的基礎。</p>
+  <p class="note"><strong>跟你筆記寫法的關係：</strong>筆記寫的是 (0 − V<sub>i</sub>)/R<sub>1</sub> = (V<sub>i</sub> − V<sub>o</sub>)/R<sub>2</sub>，等於把電流方向假設成跟箭頭相反（從地往上流）。兩邊各乘 −1 就是上面第一行，所以兩種寫法都對、結果一樣。<br><strong>另一種想法（分壓）：</strong>OP 不吃電流，所以 R<sub>2</sub>、R<sub>1</sub> 是串聯分壓：<span class="m">v<sup>−</sup> = V<sub>o</sub>·R<sub>1</sub>/(R<sub>1</sub> + R<sub>2</sub>)</span>，再令它等於 V<sub>i</sub>，一樣得到 <span class="m">V<sub>o</sub>/V<sub>i</sub> = (R<sub>1</sub> + R<sub>2</sub>)/R<sub>1</sub></span>。<br><strong>例：</strong>R<sub>1</sub> = 1 kΩ、R<sub>2</sub> = 9 kΩ → A = 1 + 9 kΩ / 1 kΩ = 1 + 9 = 10。<br><strong>白板寫法：</strong>老師把回授電阻叫 R<sub>f</sub>：V<sub>o</sub> = (1 + R<sub>f</sub>/R<sub>1</sub>)V<sub>i</sub>，R<sub>f</sub> 跟這裡的 R<sub>2</sub> 是同一顆。這個電路也是下一節減法器裡「V<sub>2</sub> 那一半」的基礎。</p>
   <aside class="fix">
     <b class="h">筆記勘誤（p.35 下半）</b>
     <ul>
       <li>電路圖上接地的電阻標成 <strong>R<sub>3</sub></strong>，但公式 <span class="m">A = 1 + R<sub>2</sub>/R<sub>1</sub></span> 用的是 R<sub>1</sub>。請統一改成 R<sub>1</sub>，不然考試時會對不起來。</li>
-      <li>推導只寫到 <span class="m">(0 − V<sub>i</sub>)/R<sub>1</sub> = (V<sub>i</sub> − V<sub>o</sub>)/R<sub>2</sub></span>，後面的移項請照上面補齊。</li>
+      <li>推導只寫到 <span class="m">(0 − V<sub>i</sub>)/R<sub>1</sub> = (V<sub>i</sub> − V<sub>o</sub>)/R<sub>2</sub></span>，這行本身是對的（電流方向假設成往上），後面的移項請照上面補齊。</li>
     </ul>
   </aside>
 </section>
@@ -541,7 +598,7 @@ html{scroll-behavior:smooth}
 <section id="buffer">
   <div class="sec-head"><span class="eyebrow">§3</span><h2>電壓隨耦器</h2><span class="en">Voltage buffer / voltage follower</span></div>
   <dl class="role">
-    <dt>作用</dt><dd>不放大（A<sub>v</sub> = 1），用來「隔離」。前面看到輸入阻抗 ∞，不拉電流；後面看到輸出阻抗 0，接什麼負載 V<sub>o</sub> 都不變。所以能推更多負載（fan-out ↑），沒有負載效應。</dd>
+    <dt>作用</dt><dd>不放大（A<sub>v</sub> = 1，V<sub>o</sub> = V<sub>i</sub>），用來<strong>隔離</strong>：讓前面的訊號源和後面的負載互不影響。對前面，輸入阻抗 ∞，不拉電流，訊號源電壓不會被拉低；對後面，輸出阻抗 0，接什麼負載 V<sub>o</sub> 都不變。所以同一個訊號可以接更多負載（fan-out ↑，fan-out 指一個輸出能同時推動幾個後級電路），沒有<strong>負載效應</strong>（接上負載後電壓被拉低的現象，下面有圖）。</dd>
     <dt>原理</dt><dd>輸出整條接回 − 端（100% 負回授），虛短路直接讓 V<sub>o</sub> = V<sub>i</sub>。</dd>
   </dl>
   <figure>
@@ -643,7 +700,7 @@ html{scroll-behavior:smooth}
 <section id="sum">
   <div class="sec-head"><span class="eyebrow">§4</span><h2>反相加法器</h2><span class="en">Inverting summing amplifier</span></div>
   <dl class="role">
-    <dt>作用</dt><dd>把多個輸入電壓「加權相加」再反相輸出，例如混音器。R<sub>1</sub> = R<sub>2</sub> = R<sub>f</sub> 時就是 <span class="m">V<sub>o</sub> = −(V<sub>1</sub> + V<sub>2</sub>)</span>。</dd>
+    <dt>作用</dt><dd>把好幾個輸入電壓加在一起再反相輸出。<strong>加權</strong>的意思是每個輸入先乘上自己的係數（R<sub>f</sub>/R<sub>1</sub>、R<sub>f</sub>/R<sub>2</sub>），係數用電阻來調。例如把兩支麥克風的訊號混在一起，其中一支要大聲一點，就把它的輸入電阻調小。R<sub>1</sub> = R<sub>2</sub> = R<sub>f</sub> 時係數都是 1，就是單純的 <span class="m">V<sub>o</sub> = −(V<sub>1</sub> + V<sub>2</sub>)</span>。</dd>
     <dt>原理</dt><dd>− 端是虛接地 0 V，所以每個輸入的電流各算各的、互不干擾，在節點匯合後全部流過 R<sub>f</sub>。</dd>
   </dl>
   <figure>
@@ -657,6 +714,8 @@ html{scroll-behavior:smooth}
       <text x="228" y="136" class="zh vs-t">虛短路</text>
       <text x="176" y="190" class="zh vs-t" text-anchor="end">− 端 = 0 V（虛接地）</text>
       <path class="cur" d="M254 46 H286" marker-end="url(#arr)"/><text x="270" y="66" class="cur-t sm" text-anchor="middle">i<tspan dy="4" font-size="9">1</tspan><tspan dy="-4"> + i</tspan><tspan dy="4" font-size="9">2</tspan></text>
+      <path class="cur" d="M134 84 H160" marker-end="url(#arr)"/><text x="147" y="78" class="cur-t sm" text-anchor="middle">i<tspan dy="4" font-size="9">1</tspan></text>
+      <path class="cur" d="M134 129 H160" marker-end="url(#arr)"/><text x="147" y="123" class="cur-t sm" text-anchor="middle">i<tspan dy="4" font-size="9">2</tspan></text>
       <text x="40" y="100" text-anchor="end">V<tspan dy="4" font-size="11">1</tspan></text>
       <text x="40" y="145" text-anchor="end">V<tspan dy="4" font-size="11">2</tspan></text>
       <text x="110" y="80" text-anchor="middle">R<tspan dy="4" font-size="11">1</tspan></text>
@@ -733,7 +792,7 @@ html{scroll-behavior:smooth}
     <figcaption>白板完整版：先「調」R<sub>f</sub>/R<sub>1</sub> = 1，再讓 R<sub>3</sub>/(R<sub>2</sub>+R<sub>3</sub>) = 1/2，得到 V<sub>o</sub> = V<sub>2</sub> − V<sub>1</sub>「達成！」。白板 + 端旁畫的「✗→」表示電流不會流進 OP</figcaption>
   </figure>
   <h3>什麼時候需要它：量「兩點之間的電壓差」</h3>
-  <p>很多感測器的訊號不是「某一點對地的電壓」，而是「兩條線之間的電壓差」，而且這兩條線本身都帶著一個很大的共同電壓。應變規（strain gauge）的惠斯登電橋就是典型例子：</p>
+  <p>很多感測器的訊號不是「某一點對地的電壓」，而是「兩條線之間的電壓差」，而且這兩條線本身都帶著一個很大的共同電壓。應變規（strain gauge）就是典型例子：應變規是一種受力變形時電阻會改變的元件，通常和三顆固定電阻接成<strong>惠斯登電橋</strong>（四顆電阻接成一個菱形，從上下兩端加電源，從左右兩個點取出 V<sub>1</sub>、V<sub>2</sub>）。沒受力時四顆電阻平衡，V<sub>1</sub> = V<sub>2</sub>；受力後應變規電阻變了，V<sub>2</sub> 稍微偏離 V<sub>1</sub>。</p>
   <div class="deriv">
     <span class="t">例：應變規電橋，電源 5 V</span>
     <div class="eq">沒受力時：電橋兩個輸出 <i>V</i><sub>1</sub> = 2.500 V、<i>V</i><sub>2</sub> = 2.500 V</div>
@@ -790,7 +849,7 @@ html{scroll-behavior:smooth}
 <section id="nic">
   <div class="sec-head"><span class="eyebrow">§6 · 白板 △</span><h2>負阻抗轉換器／定電流源</h2><span class="en">Negative impedance converter · Howland current source</span></div>
   <dl class="role">
-    <dt>作用</dt><dd>① 從 + 端往 OP 那一側看進去（下圖藍色虛線框），整塊電路等效成一顆 <strong>−R</strong> 的電阻（負阻抗，電容、電感也能做成負的）。② r<sub>1</sub> = r<sub>2</sub> 時，這顆 −R 跟輸入的 R 抵銷，流過負載的電流固定 = V<sub>i</sub>/R，<strong>與 R<sub>L</sub> 無關</strong> → 定電流源。白板把 R<sub>L</sub> 畫成<strong>可變電阻</strong>（有箭頭的那顆），旁邊寫「阻值…不重要」，意思是 R<sub>L</sub> 怎麼調，電流都一樣。白板標題下還畫了電容和電感符號：同樣的接法把 R 換成 C 或 L，就能做出負電容、負電感。</dd>
+    <dt>作用</dt><dd>① 從 + 端往 OP 那一側看進去（下圖藍色虛線框），整塊電路等效成一顆 <strong>−R</strong> 的電阻（負阻抗，電容、電感也能做成負的）。② r<sub>1</sub> = r<sub>2</sub> 時，這顆 −R 跟輸入的 R 抵銷，流過負載的電流固定 = V<sub>i</sub>/R，<strong>與 R<sub>L</sub> 無關</strong> → 定電流源。白板把 R<sub>L</sub> 畫成<strong>可變電阻</strong>（有箭頭的那顆），旁邊寫「阻值…不重要」，意思是 R<sub>L</sub> 怎麼調，電流都一樣。白板標題下還畫了電容和電感符號：同樣的接法把 R 換成 C 或 L，就能做出負電容、負電感。<br><strong>負電阻是什麼意思：</strong>一般電阻兩端加正電壓，電流會流<strong>進去</strong>（吃電流）；負電阻加正電壓時，電流反而從它<strong>流出來</strong>（往外送電流）。所以它可以拿來抵銷電路裡不想要的正電阻。<br><strong>定電流源</strong>：不管負載電阻多大，送出去的電流都固定，例如給 LED 或感測器供應固定電流。</dd>
     <dt>原理</dt><dd>r<sub>1</sub>、r<sub>2</sub> 分壓決定 − 端電壓，虛短路把 + 端也鎖在同一個電壓，再對 + 端寫 KCL。</dd>
   </dl>
   <figure>
@@ -827,7 +886,7 @@ html{scroll-behavior:smooth}
   </figure>
   <h3>電路怎麼 work</h3>
   <ol class="steps">
-    <li><div>這個電路同時有負回授（經 r<sub>2</sub> 回 − 端）和正回授（經 R 回 + 端）。負回授比例 = r<sub>1</sub>/(r<sub>1</sub>+r<sub>2</sub>)，白板取 r<sub>1</sub> = r<sub>2</sub> 時 = 1/2；正回授分到的比例一定小於 1/2（因為 + 端還並著 R<sub>L</sub>），負回授比較強，所以<span class="g">虛短路</span>仍可用。</div></li>
+    <li><div>這個電路同時有負回授（經 r<sub>2</sub> 回 − 端）和正回授（經 R 回 + 端）。「回授比例」指輸出電壓 V<sub>o</sub> 經過電阻分壓後，有幾成回到輸入腳。負回授：V<sub>o</sub> 經 r<sub>2</sub>、r<sub>1</sub> 分壓回到 − 腳，比例 = r<sub>1</sub>/(r<sub>1</sub> + r<sub>2</sub>)，r<sub>1</sub> = r<sub>2</sub> 時 = 1/2。正回授：V<sub>o</sub> 經回授 R 回到 + 腳，+ 腳到地之間還有 R<sub>L</sub> 和輸入 R 並聯（記作 R∥R<sub>L</sub> = R·R<sub>L</sub>/(R + R<sub>L</sub>)，一定比 R 小），比例 = (R∥R<sub>L</sub>)/(R + R∥R<sub>L</sub>)，一定小於 1/2。負回授比例比較大，整體還是負回授，所以<span class="g">虛短路</span>仍可用。</div></li>
     <li><div>令 r<sub>1</sub> = r<sub>2</sub> = r。<span class="r">虛斷路</span> → r<sub>1</sub>、r<sub>2</sub> 串聯分壓 → − 端電壓 <span class="m">V<sub>x</sub> = V<sub>o</sub>/2</span>。</div></li>
     <li><div><span class="g">虛短路</span> → + 端（也就是 R<sub>L</sub> 上端）也是 <span class="m">V<sub>x</sub> = V<sub>o</sub>/2</span>，換句話說 <span class="m">V<sub>o</sub> = 2V<sub>x</sub></span>。</div></li>
     <li><div>① 流過輸入 R：<span class="m">(V<sub>i</sub> − V<sub>x</sub>)/R</span>；② 流過回授 R（從 + 端流向 V<sub>o</sub>）：<span class="m">(V<sub>x</sub> − V<sub>o</sub>)/R</span>。</div></li>
@@ -858,6 +917,8 @@ html{scroll-behavior:smooth}
   </div>
 
   <h3>Norton 等效：為什麼電流固定</h3>
+  <p><strong>Norton 等效是什麼：</strong>「電壓源 V 串一顆電阻 R」可以換成「電流源 V/R 並聯同一顆 R」。兩種畫法對外面接的任何負載，給出的電壓、電流都完全一樣，只是換個角度看。<strong>電流源</strong>的符號是圓圈裡一個箭頭，表示它固定送出這麼多電流。</p>
+  <p>把左邊的 V<sub>i</sub> 串 R 換成 Norton 形式，再把藍色虛線框換成一顆 −R，整個電路就變成下面這樣（全部並聯在 + 端那個節點和地之間）：</p>
   <figure>
     <svg class="ckt" viewBox="0 0 460 210" role="img" aria-label="Norton 等效電路">
       <path class="w" d="M100 40 H370 M100 170 H370 M100 40 V83 M100 127 V170 M190 40 V85 M190 125 V170 M280 40 V85 M280 125 V170 M370 40 V85 M370 125 V170 M235 170 V178"/>
@@ -893,7 +954,7 @@ html{scroll-behavior:smooth}
 <section id="int">
   <div class="sec-head"><span class="eyebrow">§7 · 白板 △</span><h2>積分器</h2><span class="en">Integrator</span></div>
   <dl class="role">
-    <dt>作用</dt><dd>輸出跟輸入對時間的積分成正比（V<sub>i</sub> 曲線下的面積，就是白板右邊那張畫斜線的圖）。方波進去 → 三角波出來。</dd>
+    <dt>作用</dt><dd>輸出等於輸入對時間的積分（乘上 −1/RC），也就是 V<sub>i</sub> 曲線底下累積的面積（白板右邊那張畫斜線的圖）。用途：① 波形轉換，方波進去 → 三角波出來；② 類比運算，例如把「速度」的電壓訊號積分成「位移」。</dd>
     <dt>原理</dt><dd>R 把電壓變成電流 V<sub>i</sub>/R，這個電流全部拿去給 C 充電；電容電壓 = 電流的累積。</dd>
   </dl>
   <figure>
@@ -956,7 +1017,7 @@ html{scroll-behavior:smooth}
 <section id="der">
   <div class="sec-head"><span class="eyebrow">§8 · 白板</span><h2>微分器</h2><span class="en">Differentiator</span></div>
   <dl class="role">
-    <dt>作用</dt><dd>輸出跟輸入的「變化率」成正比。三角波進去 → 方波出來。積分器把 R、C 位置對調就是微分器。</dd>
+    <dt>作用</dt><dd>輸出等於輸入對時間的微分（乘上 −RC），也就是 V<sub>i</sub> 變化得多快（斜率）。V<sub>i</sub> 不變時輸出 0，變得越快輸出越大。用途：① 波形轉換，三角波進去 → 方波出來；② 偵測訊號突然變化的瞬間；③ 例如把「位移」的電壓訊號微分成「速度」。積分器把 R、C 位置對調就是微分器。</dd>
     <dt>原理</dt><dd>電容只在電壓變化時有電流（i = C·dV/dt）；這個電流全部流過 R，在 R 上產生電壓。</dd>
   </dl>
   <figure>
@@ -976,6 +1037,7 @@ html{scroll-behavior:smooth}
       <text x="270" y="15" text-anchor="middle">R</text>
       <text x="432" y="135">V<tspan dy="4" font-size="11">o</tspan></text>
     </svg>
+    <figcaption>電容左邊接 V<sub>i</sub>、右邊接 − 端（0 V），所以電容兩端電壓 V<sub>c</sub> = V<sub>i</sub> − 0 = V<sub>i</sub></figcaption>
   </figure>
   <h3>電路怎麼 work</h3>
   <ol class="steps">
@@ -1009,7 +1071,8 @@ html{scroll-behavior:smooth}
 <section id="exp">
   <div class="sec-head"><span class="eyebrow">§9 · 白板「7 指數放大」</span><h2>指數放大器</h2><span class="en">Exponential (anti-log) amplifier</span></div>
   <dl class="role">
-    <dt>作用</dt><dd>輸出跟 <span class="m">e<sup>V<sub>i</sub></sup></span> 成正比（白板紅字：V<sub>o</sub> = e<sup>V<sub>i</sub></sup> × 係數）。</dd>
+    <dt>作用</dt><dd>輸出跟 <span class="m">e<sup>V<sub>i</sub>/nV<sub>T</sub></sup></span> 成正比（白板紅字：V<sub>o</sub> = e<sup>V<sub>i</sub></sup> × 係數）：輸入每增加一點點，輸出就成倍增加。用途是做類比運算，例如和對數放大器搭配，可以用電路做乘法、除法。</dd>
+    <dt>符號</dt><dd>I<sub>s</sub>：二極體的逆向飽和電流，是元件本身的常數，非常小（大約 10<sup>−14</sup> 到 10<sup>−9</sup> A）。n：理想因子，介於 1 到 2 的常數。V<sub>T</sub>：熱電壓 = kT/q，室溫約 26 mV。<strong>順偏</strong>：陽極電壓比陰極高，二極體導通；<strong>逆偏</strong>：反過來，幾乎不導通。</dd>
     <dt>原理</dt><dd>二極體的電流跟電壓是指數關係；虛接地讓二極體電壓剛好 = V<sub>i</sub>，電流再經 R 變回電壓。</dd>
   </dl>
   <figure>
@@ -1025,7 +1088,7 @@ html{scroll-behavior:smooth}
       <path class="cur" d="M95 118 H125" marker-end="url(#arr)"/><text x="110" y="138" class="cur-t sm" text-anchor="middle">I<tspan dy="4" font-size="10">D</tspan></text>
       <path class="cur" d="M254 46 H286" marker-end="url(#arr)"/>
       <text x="40" y="100" text-anchor="end">V<tspan dy="4" font-size="11">i</tspan></text>
-      <text x="110" y="78" text-anchor="middle">D</text>
+      <text x="110" y="70" text-anchor="middle">D</text><text x="96" y="84" class="zh sm mut" text-anchor="middle">陽</text><text x="124" y="84" class="zh sm mut" text-anchor="middle">陰</text>
       <text x="270" y="15" text-anchor="middle">R</text>
       <text x="432" y="135">V<tspan dy="4" font-size="11">o</tspan></text>
     </svg>
