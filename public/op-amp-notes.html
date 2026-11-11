@@ -117,6 +117,9 @@ td a{color:var(--accent);text-decoration:none;font-weight:500}
 .trio svg.ckt{min-width:0;max-width:300px}
 .ckt .fbn{fill:none;stroke:var(--vs);stroke-width:3.4}
 .ckt .fbp{fill:none;stroke:var(--cur);stroke-width:3.4}
+.ckt .box-a{fill:none;stroke:var(--accent);stroke-width:1.8;stroke-dasharray:7 5}
+.ckt .acc{fill:none;stroke:var(--accent);stroke-width:2}
+.ckt text.acc-t{fill:var(--accent);font-weight:700}
 .ckt .wall{fill:none;stroke:var(--cur);stroke-width:6;stroke-linecap:butt}
 table.mini{min-width:0}
 .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
@@ -141,6 +144,7 @@ html{scroll-behavior:smooth}
     <path id="cap" d="M0 0 H17 M23 0 H40 M17 -12 V12 M23 -12 V12" fill="none" stroke="currentColor"/>
     <g id="dio"><path d="M0 0 H12 M28 0 H40 M28 -10 V10" fill="none" stroke="currentColor"/><path d="M12 -10 V10 L28 0 Z" fill="none" stroke="currentColor"/></g>
     <path id="gnd" d="M0 0 V8 M-12 8 H12 M-7 13 H7 M-2.5 18 H2.5" fill="none" stroke="currentColor"/>
+    <marker id="arrA" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" style="fill:var(--accent)"/></marker>
     <marker id="arr" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" style="fill:var(--cur)"/></marker>
   </defs>
 </svg>
@@ -786,11 +790,15 @@ html{scroll-behavior:smooth}
 <section id="nic">
   <div class="sec-head"><span class="eyebrow">§6 · 白板 △</span><h2>負阻抗轉換器／定電流源</h2><span class="en">Negative impedance converter · Howland current source</span></div>
   <dl class="role">
-    <dt>作用</dt><dd>① 從 + 端往 OP 那一側看進去，整塊電路等效成一顆 <strong>−R</strong> 的電阻（負阻抗，電容、電感也能做成負的）。② r<sub>1</sub> = r<sub>2</sub> 時，這顆 −R 跟輸入的 R 抵銷，流過負載的電流固定 = V<sub>i</sub>/R，<strong>與 R<sub>L</sub> 無關</strong> → 定電流源。白板把 R<sub>L</sub> 畫成<strong>可變電阻</strong>（有箭頭的那顆），旁邊寫「阻值…不重要」，意思是 R<sub>L</sub> 怎麼調，電流都一樣。白板標題下還畫了電容和電感符號：同樣的接法把 R 換成 C 或 L，就能做出負電容、負電感。</dd>
+    <dt>作用</dt><dd>① 從 + 端往 OP 那一側看進去（下圖藍色虛線框），整塊電路等效成一顆 <strong>−R</strong> 的電阻（負阻抗，電容、電感也能做成負的）。② r<sub>1</sub> = r<sub>2</sub> 時，這顆 −R 跟輸入的 R 抵銷，流過負載的電流固定 = V<sub>i</sub>/R，<strong>與 R<sub>L</sub> 無關</strong> → 定電流源。白板把 R<sub>L</sub> 畫成<strong>可變電阻</strong>（有箭頭的那顆），旁邊寫「阻值…不重要」，意思是 R<sub>L</sub> 怎麼調，電流都一樣。白板標題下還畫了電容和電感符號：同樣的接法把 R 換成 C 或 L，就能做出負電容、負電感。</dd>
     <dt>原理</dt><dd>r<sub>1</sub>、r<sub>2</sub> 分壓決定 − 端電壓，虛短路把 + 端也鎖在同一個電壓，再對 + 端寫 KCL。</dd>
   </dl>
   <figure>
-    <svg class="ckt" viewBox="0 0 520 295" role="img" aria-label="負阻抗轉換器／定電流源電路">
+    <svg class="ckt" viewBox="0 -12 520 312" role="img" aria-label="負阻抗轉換器／定電流源電路">
+      <path class="box-a" d="M95 -4 H514 V294 H216 V126 H95 Z"/>
+      <text x="102" y="20" class="zh acc-t">虛線框裡這一整塊 ＝ −R</text>
+      <path class="acc" d="M194 150 H214" marker-end="url(#arrA)"/>
+      <text x="120" y="147" class="zh sm acc-t">從這裡看進去</text>
       <use href="#op" x="280" y="60"/>
       <path class="w" d="M110 95 H150 M190 95 H280 M250 95 V30 H310 M350 30 H440 V130 M410 130 H476 M44 165 H80 M120 165 H280 M170 165 V180 M170 220 V225 M230 165 V260 H320 M360 260 H440 V130"/>
       <use href="#gnd" x="110" y="95"/><use href="#res" x="150" y="95"/><use href="#res" x="310" y="30"/>
@@ -805,7 +813,7 @@ html{scroll-behavior:smooth}
       <text x="256" y="84" class="vs-t sm">V<tspan dy="4" font-size="10">x</tspan></text>
       <text x="240" y="186" class="vs-t sm">V<tspan dy="4" font-size="10">x</tspan></text>
       <path class="cur" d="M84 184 H116" marker-end="url(#arr)"/><text x="100" y="206" class="zh cur-t" text-anchor="middle">①</text>
-      <path class="cur" d="M202 184 V214" marker-end="url(#arr)"/><text x="207" y="234" class="cur-t sm">I<tspan dy="4" font-size="10">L</tspan></text>
+      <path class="cur" d="M192 184 V214" marker-end="url(#arr)"/><text x="196" y="234" class="cur-t sm">I<tspan dy="4" font-size="10">L</tspan></text>
       <path class="cur" d="M325 278 H355" marker-end="url(#arr)"/><text x="316" y="283" class="zh cur-t" text-anchor="end">②</text>
       <text x="30" y="170" text-anchor="end">V<tspan dy="4" font-size="11">i</tspan></text>
       <text x="100" y="150" text-anchor="middle">R</text>
@@ -815,7 +823,7 @@ html{scroll-behavior:smooth}
       <text x="330" y="15" text-anchor="middle">r<tspan dy="4" font-size="11">2</tspan></text>
       <text x="492" y="135">V<tspan dy="4" font-size="11">o</tspan></text>
     </svg>
-    <figcaption>上方 r<sub>1</sub>、r<sub>2</sub> 把輸出接回 − 端（負回授）；下方 R 把輸出接回 + 端（正回授）。① 是從 V<sub>i</sub> 流進來的電流，② 是從 + 端流向 V<sub>o</sub> 的電流。<br>R<sub>L</sub> 上那支斜箭頭是<strong>可變電阻</strong>的符號（阻值可以調），白板就是這樣畫的，用來表示 R<sub>L</sub> 調成多少，I<sub>L</sub> 都一樣。</figcaption>
+    <figcaption><b>藍色虛線框</b>就是「等效成 −R」的那一塊：OP、r<sub>1</sub>、r<sub>2</sub> 和下方回授 R 全部算在一起。它只有一個接點露在框外，就是 + 端那條線（藍色箭頭）。站在箭頭的位置往框裡看，整塊的電壓和電流關係就跟一顆 −R 的電阻一樣。<br>上方 r<sub>1</sub>、r<sub>2</sub> 把輸出接回 − 端（負回授）；下方 R 把輸出接回 + 端（正回授）。① 是從 V<sub>i</sub> 流進來的電流，② 是從 + 端流向 V<sub>o</sub> 的電流。<br>R<sub>L</sub> 上那支斜箭頭是<strong>可變電阻</strong>的符號（阻值可以調），白板就是這樣畫的，用來表示 R<sub>L</sub> 調成多少，I<sub>L</sub> 都一樣。</figcaption>
   </figure>
   <h3>電路怎麼 work</h3>
   <ol class="steps">
@@ -835,7 +843,7 @@ html{scroll-behavior:smooth}
   </div>
   <div class="deriv">
     <span class="t">推導：看進去是 −R（白板紅字）</span>
-    <div class="eq">在 + 端把 R<sub>L</sub> 和輸入 R 剪開，只看「OP + 回授 R」這一側，外加測試電壓 V<sub>x</sub>，流進去的電流就是 ②：</div>
+    <div class="eq">在 + 端把 R<sub>L</sub> 和輸入 R 剪開，只看藍色虛線框裡那一塊（OP、r<sub>1</sub>、r<sub>2</sub>、回授 R），外加測試電壓 V<sub>x</sub>，流進去的電流就是 ②：</div>
     <div class="eq"><i>R</i><sub>i</sub> = <span class="fr"><span><i>V</i><sub>x</sub></span><span>②</span></span> = <span class="fr"><span><i>V</i><sub>o</sub>/2</span><span>−<i>V</i><sub>o</sub>/(2<i>R</i>)</span></span> = <span class="fr"><span><i>V</i><sub>o</sub></span><span>2</span></span>·<span class="fr"><span>2<i>R</i></span><span>−<i>V</i><sub>o</sub></span></span></div>
     <div class="eq res"><span class="box"><i>R</i><sub>i</sub> = −<i>R</i></span><span class="why">電壓為正，電流卻是「流出來」的 → 負電阻</span></div>
     <div class="eq">一般式（r₁ ≠ r₂）：<i>V</i><sub>o</sub> = <i>V</i><sub>x</sub>(1 + <span class="fr"><span><i>r</i><sub>2</sub></span><span><i>r</i><sub>1</sub></span></span>) ⇒ <i>R</i><sub>i</sub> = −<i>R</i>·<span class="fr"><span><i>r</i><sub>1</sub></span><span><i>r</i><sub>2</sub></span></span></div>
