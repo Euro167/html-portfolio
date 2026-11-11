@@ -601,7 +601,7 @@ html{scroll-behavior:smooth}
 <section id="buffer">
   <div class="sec-head"><span class="eyebrow">§3</span><h2>電壓隨耦器</h2><span class="en">Voltage buffer / voltage follower</span></div>
   <dl class="role">
-    <dt>目的</dt><dd class="goal">隔離負載，讓訊號電壓不被拉低</dd>
+    <dt>目的</dt><dd class="goal">增加 fan out（一個訊號能同時推動的電路數量）</dd>
     <dt>用途</dt><dd>訊號源推不動後面的負載時用，例如一個訊號要同時接很多電路，一接上電壓就被拉低。把它加在中間，V<sub>o</sub> = V<sub>i</sub> 不放大，但負載要的電流改由 OP 供應，訊號源不用出電流，電壓就不會掉。</dd>
     <dt>原理</dt><dd>輸出整條接回 − 端（100% 負回授），虛短路直接讓 V<sub>o</sub> = V<sub>i</sub>。</dd>
   </dl>
