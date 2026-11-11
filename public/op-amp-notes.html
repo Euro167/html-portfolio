@@ -497,7 +497,7 @@ html{scroll-behavior:smooth}
 <section id="inv">
   <div class="sec-head"><span class="eyebrow">§1 · 老師畫兩顆星</span><h2>反相放大器</h2><span class="en">Inverting amplifier</span></div>
   <dl class="role">
-    <dt>作用</dt><dd>把很小的電壓放大成夠大、能被後面電路讀取的電壓（例如感測器只有幾 mV 的輸出）。<strong>反相</strong>的意思是輸出跟輸入正負相反：V<sub>i</sub> 是正的，V<sub>o</sub> 就是負的；畫成波形就是上下顛倒（相位差 180°）。放大倍數只由 R<sub>2</sub>/R<sub>1</sub> 決定，跟 OP 本身的 A<sub>v</sub> 無關。</dd>
+    <dt>作用</dt><dd>把小電壓放大，輸出跟輸入正負相反（V<sub>i</sub> 正 → V<sub>o</sub> 負）。放大倍數 = −R<sub>2</sub>/R<sub>1</sub>，只看兩顆電阻。</dd>
     <dt>原理</dt><dd>虛接地 ＋ 虛斷路：R<sub>1</sub> 的電流進不了 OP，只能全部流過 R<sub>2</sub>。</dd>
   </dl>
   <figure>
@@ -546,7 +546,7 @@ html{scroll-behavior:smooth}
 <section id="noninv">
   <div class="sec-head"><span class="eyebrow">§2</span><h2>正相放大器</h2><span class="en">Non-inverting amplifier</span></div>
   <dl class="role">
-    <dt>作用</dt><dd>跟反相放大器一樣是放大訊號，差別有兩個：① <strong>同相</strong>，V<sub>i</sub> 正 V<sub>o</sub> 也正；② 訊號直接接 OP 的 + 腳，<strong>輸入阻抗 ∞</strong>，完全不從訊號源拉電流，所以訊號源的電壓不會被拉低（反相放大器的輸入阻抗只有 R<sub>1</sub>）。放大倍數一定 ≥ 1。</dd>
+    <dt>作用</dt><dd>把小電壓放大，輸出跟輸入同正負。跟反相放大器的差別：輸入阻抗 ∞，不會從訊號源拉電流。</dd>
     <dt>原理</dt><dd>訊號直接進 + 端，虛短路把 − 端也拉到 V<sub>i</sub>；R<sub>1</sub>、R<sub>2</sub> 其實是一個分壓器。</dd>
   </dl>
   <figure>
@@ -598,7 +598,7 @@ html{scroll-behavior:smooth}
 <section id="buffer">
   <div class="sec-head"><span class="eyebrow">§3</span><h2>電壓隨耦器</h2><span class="en">Voltage buffer / voltage follower</span></div>
   <dl class="role">
-    <dt>作用</dt><dd>不放大（A<sub>v</sub> = 1，V<sub>o</sub> = V<sub>i</sub>），用來<strong>隔離</strong>：讓前面的訊號源和後面的負載互不影響。對前面，輸入阻抗 ∞，不拉電流，訊號源電壓不會被拉低；對後面，輸出阻抗 0，接什麼負載 V<sub>o</sub> 都不變。所以同一個訊號可以接更多負載（fan-out ↑，fan-out 指一個輸出能同時推動幾個後級電路），沒有<strong>負載效應</strong>（接上負載後電壓被拉低的現象，下面有圖）。</dd>
+    <dt>作用</dt><dd>V<sub>o</sub> = V<sub>i</sub>，不放大。用來隔離：訊號源不用出電流，後面接什麼負載 V<sub>o</sub> 都不變（下面有對照圖）。</dd>
     <dt>原理</dt><dd>輸出整條接回 − 端（100% 負回授），虛短路直接讓 V<sub>o</sub> = V<sub>i</sub>。</dd>
   </dl>
   <figure>
@@ -700,7 +700,7 @@ html{scroll-behavior:smooth}
 <section id="sum">
   <div class="sec-head"><span class="eyebrow">§4</span><h2>反相加法器</h2><span class="en">Inverting summing amplifier</span></div>
   <dl class="role">
-    <dt>作用</dt><dd>把好幾個輸入電壓加在一起再反相輸出。<strong>加權</strong>的意思是每個輸入先乘上自己的係數（R<sub>f</sub>/R<sub>1</sub>、R<sub>f</sub>/R<sub>2</sub>），係數用電阻來調。例如把兩支麥克風的訊號混在一起，其中一支要大聲一點，就把它的輸入電阻調小。R<sub>1</sub> = R<sub>2</sub> = R<sub>f</sub> 時係數都是 1，就是單純的 <span class="m">V<sub>o</sub> = −(V<sub>1</sub> + V<sub>2</sub>)</span>。</dd>
+    <dt>作用</dt><dd>把多個輸入加起來再反相。每個輸入的係數用電阻調（R<sub>f</sub>/R<sub>1</sub>、R<sub>f</sub>/R<sub>2</sub>）；電阻都一樣時就是 V<sub>o</sub> = −(V<sub>1</sub> + V<sub>2</sub>)。</dd>
     <dt>原理</dt><dd>− 端是虛接地 0 V，所以每個輸入的電流各算各的、互不干擾，在節點匯合後全部流過 R<sub>f</sub>。</dd>
   </dl>
   <figure>
@@ -849,7 +849,7 @@ html{scroll-behavior:smooth}
 <section id="nic">
   <div class="sec-head"><span class="eyebrow">§6 · 白板 △</span><h2>負阻抗轉換器／定電流源</h2><span class="en">Negative impedance converter · Howland current source</span></div>
   <dl class="role">
-    <dt>作用</dt><dd>① 從 + 端往 OP 那一側看進去（下圖藍色虛線框），整塊電路等效成一顆 <strong>−R</strong> 的電阻（負阻抗，電容、電感也能做成負的）。② r<sub>1</sub> = r<sub>2</sub> 時，這顆 −R 跟輸入的 R 抵銷，流過負載的電流固定 = V<sub>i</sub>/R，<strong>與 R<sub>L</sub> 無關</strong> → 定電流源。白板把 R<sub>L</sub> 畫成<strong>可變電阻</strong>（有箭頭的那顆），旁邊寫「阻值…不重要」，意思是 R<sub>L</sub> 怎麼調，電流都一樣。白板標題下還畫了電容和電感符號：同樣的接法把 R 換成 C 或 L，就能做出負電容、負電感。<br><strong>負電阻是什麼意思：</strong>一般電阻兩端加正電壓，電流會流<strong>進去</strong>（吃電流）；負電阻加正電壓時，電流反而從它<strong>流出來</strong>（往外送電流）。所以它可以拿來抵銷電路裡不想要的正電阻。<br><strong>定電流源</strong>：不管負載電阻多大，送出去的電流都固定，例如給 LED 或感測器供應固定電流。</dd>
+    <dt>作用</dt><dd>① <strong>定電流源</strong>：流過 R<sub>L</sub> 的電流固定 = V<sub>i</sub>/R，R<sub>L</sub> 怎麼調都一樣。② <strong>負阻抗</strong>：下圖藍色虛線框那一塊，從 + 端看進去等於一顆 −R 的電阻（r<sub>1</sub> = r<sub>2</sub> 時）。</dd>
     <dt>原理</dt><dd>r<sub>1</sub>、r<sub>2</sub> 分壓決定 − 端電壓，虛短路把 + 端也鎖在同一個電壓，再對 + 端寫 KCL。</dd>
   </dl>
   <figure>
@@ -954,7 +954,7 @@ html{scroll-behavior:smooth}
 <section id="int">
   <div class="sec-head"><span class="eyebrow">§7 · 白板 △</span><h2>積分器</h2><span class="en">Integrator</span></div>
   <dl class="role">
-    <dt>作用</dt><dd>輸出等於輸入對時間的積分（乘上 −1/RC），也就是 V<sub>i</sub> 曲線底下累積的面積（白板右邊那張畫斜線的圖）。用途：① 波形轉換，方波進去 → 三角波出來；② 類比運算，例如把「速度」的電壓訊號積分成「位移」。</dd>
+    <dt>作用</dt><dd>V<sub>o</sub> = 輸入對時間的積分 × (−1/RC)。方波進去 → 三角波出來。</dd>
     <dt>原理</dt><dd>R 把電壓變成電流 V<sub>i</sub>/R，這個電流全部拿去給 C 充電；電容電壓 = 電流的累積。</dd>
   </dl>
   <figure>
@@ -1017,7 +1017,7 @@ html{scroll-behavior:smooth}
 <section id="der">
   <div class="sec-head"><span class="eyebrow">§8 · 白板</span><h2>微分器</h2><span class="en">Differentiator</span></div>
   <dl class="role">
-    <dt>作用</dt><dd>輸出等於輸入對時間的微分（乘上 −RC），也就是 V<sub>i</sub> 變化得多快（斜率）。V<sub>i</sub> 不變時輸出 0，變得越快輸出越大。用途：① 波形轉換，三角波進去 → 方波出來；② 偵測訊號突然變化的瞬間；③ 例如把「位移」的電壓訊號微分成「速度」。積分器把 R、C 位置對調就是微分器。</dd>
+    <dt>作用</dt><dd>V<sub>o</sub> = 輸入的變化率 × (−RC)：V<sub>i</sub> 不變時輸出 0，變得越快輸出越大。三角波進去 → 方波出來。</dd>
     <dt>原理</dt><dd>電容只在電壓變化時有電流（i = C·dV/dt）；這個電流全部流過 R，在 R 上產生電壓。</dd>
   </dl>
   <figure>
@@ -1071,7 +1071,7 @@ html{scroll-behavior:smooth}
 <section id="exp">
   <div class="sec-head"><span class="eyebrow">§9 · 白板「7 指數放大」</span><h2>指數放大器</h2><span class="en">Exponential (anti-log) amplifier</span></div>
   <dl class="role">
-    <dt>作用</dt><dd>輸出跟 <span class="m">e<sup>V<sub>i</sub>/nV<sub>T</sub></sup></span> 成正比（白板紅字：V<sub>o</sub> = e<sup>V<sub>i</sub></sup> × 係數）：輸入每增加一點點，輸出就成倍增加。用途是做類比運算，例如和對數放大器搭配，可以用電路做乘法、除法。</dd>
+    <dt>作用</dt><dd>V<sub>o</sub> 跟 e<sup>V<sub>i</sub>/nV<sub>T</sub></sup> 成正比：V<sub>i</sub> 增加一點，輸出就成倍增加。</dd>
     <dt>符號</dt><dd>I<sub>s</sub>：二極體的逆向飽和電流，是元件本身的常數，非常小（大約 10<sup>−14</sup> 到 10<sup>−9</sup> A）。n：理想因子，介於 1 到 2 的常數。V<sub>T</sub>：熱電壓 = kT/q，室溫約 26 mV。<strong>順偏</strong>：陽極電壓比陰極高，二極體導通；<strong>逆偏</strong>：反過來，幾乎不導通。</dd>
     <dt>原理</dt><dd>二極體的電流跟電壓是指數關係；虛接地讓二極體電壓剛好 = V<sub>i</sub>，電流再經 R 變回電壓。</dd>
   </dl>
