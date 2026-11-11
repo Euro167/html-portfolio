@@ -540,16 +540,61 @@ html{scroll-behavior:smooth}
     <div class="eq"><i>V</i><sub>o</sub> = <i>v</i><sup>−</sup> = <i>v</i><sup>+</sup> = <i>V</i><sub>i</sub></div>
     <div class="eq res"><span class="box"><i>A</i><sub>v</sub> = <span class="fr"><span><i>V</i><sub>o</sub></span><span><i>V</i><sub>i</sub></span></span> = 1</span><span class="why">也可看成正相放大器 R₂ = 0、R₁ = ∞：1 + 0/∞ = 1</span></div>
   </div>
-  <h3>白板：為什麼需要它（好處：V 不受 R<sub>L</sub> 影響）</h3>
-  <p>老師的對照圖：電源 V<sub>i</sub> 串內阻 R<sub>s</sub>，<strong>不加</strong> buffer 直接接負載。</p>
+  <h3>為什麼需要它：沒加 buffer vs 加了 buffer</h3>
+  <p>「V 不受 R<sub>L</sub> 影響」是 buffer 的<strong>好處</strong>。老師為了說明這個好處，先畫了<strong>沒有 buffer</strong> 的情況給你看（下面第一張，筆記裡叫「左圖」）：這時候 V<sub>o</sub> 會被 R<sub>L</sub> 拉低。加上 buffer（第二張，「右圖」）之後就不會了。所以下面的「分壓」講的是<strong>左圖、沒加 buffer</strong> 的壞處，不是 buffer 本身。</p>
+  <div style="display:flex;flex-direction:column;gap:14px">
+    <figure>
+      <svg class="ckt" style="max-width:360px" viewBox="0 0 300 200" role="img" aria-label="沒有 buffer：電源經 Rs 直接接 RL">
+        <circle class="w" cx="50" cy="110" r="18"/>
+        <text x="50" y="106" class="sm" text-anchor="middle">+</text><text x="50" y="124" class="sm" text-anchor="middle">−</text>
+        <path class="w" d="M50 92 V50 H90 M130 50 H250 M200 50 V75 M200 115 V125 M50 128 V140"/>
+        <use href="#res" x="90" y="50"/>
+        <use href="#res" transform="translate(200 75) rotate(90)"/>
+        <use href="#gnd" x="200" y="125"/><use href="#gnd" x="50" y="140"/>
+        <circle class="dot" cx="200" cy="50" r="3.5"/><circle class="term" cx="254" cy="50" r="4"/>
+        <text x="26" y="115" text-anchor="end">V<tspan dy="4" font-size="11">i</tspan></text>
+        <text x="110" y="35" text-anchor="middle">R<tspan dy="4" font-size="11">s</tspan></text>
+        <text x="212" y="100">R<tspan dy="4" font-size="11">L</tspan></text>
+        <text x="266" y="55">V<tspan dy="4" font-size="11">o</tspan></text>
+        <path class="cur" d="M96 66 H124" marker-end="url(#arr)"/>
+        <text x="150" y="188" class="zh cur-t" text-anchor="middle">電流流過 Rs → 掉壓 → Vo ↓</text>
+      </svg>
+      <figcaption><b class="r">左圖：沒加 buffer ✗</b><br>R<sub>s</sub> 和 R<sub>L</sub> 串在同一條路上，形成分壓</figcaption>
+    </figure>
+    <figure>
+      <svg class="ckt" viewBox="0 0 470 240" role="img" aria-label="加了 buffer：電源經 Rs 接 OP 正端，OP 輸出推 RL">
+        <use href="#op" x="220" y="60"/>
+        <circle class="w" cx="36" cy="190" r="16"/>
+        <text x="36" y="187" class="sm" text-anchor="middle">+</text><text x="36" y="203" class="sm" text-anchor="middle">−</text>
+        <path class="w" d="M36 174 V165 H70 M110 165 H220 M36 206 V212 M350 130 H436 M410 130 V145 M410 185 V190"/>
+        <path class="fbn" d="M220 95 H190 V30 H380 V130"/>
+        <use href="#res" x="70" y="165"/>
+        <use href="#res" transform="translate(410 145) rotate(90)"/>
+        <use href="#gnd" x="36" y="212"/><use href="#gnd" x="410" y="190"/>
+        <circle class="dot" cx="380" cy="130" r="3.5"/><circle class="dot" cx="410" cy="130" r="3.5"/><circle class="term" cx="440" cy="130" r="4"/>
+        <path class="vs" d="M208 95 V165"/>
+        <text x="228" y="136" class="zh vs-t">虛短路</text>
+        <text x="16" y="170" text-anchor="end">V<tspan dy="4" font-size="11">i</tspan></text>
+        <text x="90" y="150" text-anchor="middle">R<tspan dy="4" font-size="11">s</tspan></text>
+        <text x="422" y="170">R<tspan dy="4" font-size="11">L</tspan></text>
+        <text x="440" y="116" text-anchor="middle">V<tspan dy="4" font-size="11">o</tspan></text>
+        <text x="125" y="192" class="zh sm cur-t" text-anchor="middle">i = 0 → Rs 不掉壓</text>
+        <text x="300" y="228" class="zh vs-t" text-anchor="middle">Vo = Vi，RL 換多少都一樣</text>
+      </svg>
+      <figcaption><b class="g">右圖：加了 buffer ✓</b><br>R<sub>s</sub> 只接到 OP 的 + 端（沒電流），R<sub>L</sub> 改由 OP 輸出來推</figcaption>
+    </figure>
+  </div>
   <div class="deriv">
-    <span class="t">① 沒有 R<sub>L</sub></span>
+    <span class="t">左圖（沒加 buffer）① 還沒接 R<sub>L</sub></span>
     <div class="eq">沒有電流 ⇒ R<sub>s</sub> 沒有壓降 ⇒ <i>V</i><sub>o</sub> = <i>V</i><sub>i</sub></div>
-    <span class="t">② 有 R<sub>L</sub>：分壓</span>
+    <span class="t">左圖（沒加 buffer）② 接上 R<sub>L</sub>：分壓</span>
     <div class="eq"><i>V</i><sub>o</sub> = <i>V</i><sub>i</sub>·<span class="fr"><span><i>R</i><sub>L</sub></span><span><i>R</i><sub>s</sub> + <i>R</i><sub>L</sub></span></span> &lt; <i>V</i><sub>i</sub> ⇒ <i>V</i><sub>o</sub> ↓<span class="why">這就是負載效應</span></div>
     <div class="eq">例：<i>R</i><sub>s</sub> = <i>R</i><sub>L</sub> = 1 kΩ ⇒ <i>V</i><sub>o</sub> = <i>V</i><sub>i</sub> × <span class="fr"><span>1 kΩ</span><span>1 kΩ + 1 kΩ</span></span> = <i>V</i><sub>i</sub> × <span class="fr"><span>1</span><span>2</span></span></div>
+    <span class="t">右圖（加了 buffer）③ 接上 R<sub>L</sub></span>
+    <div class="eq">i = 0 ⇒ <i>v</i><sup>+</sup> = <i>V</i><sub>i</sub> ⇒ 虛短路 <i>v</i><sup>−</sup> = <i>V</i><sub>i</sub> ⇒ <i>V</i><sub>o</sub> = <i>V</i><sub>i</sub><span class="why">R<sub>L</sub> 沒出現在式子裡</span></div>
+    <div class="eq res">同樣 R<sub>s</sub> = R<sub>L</sub> = 1 kΩ：<i>V</i><sub>o</sub> = <i>V</i><sub>i</sub>（左圖只剩 <i>V</i><sub>i</sub> × 1/2）</div>
   </div>
-  <p class="note"><strong>筆記寫的「fan out ↑」是什麼意思：</strong>一個訊號源要同時推 100 個電路，這 100 個輸入電阻是<strong>並聯</strong>，總負載變得很小。假設每個電路輸入電阻 10 kΩ、R<sub>s</sub> = 1 kΩ：<br>R<sub>L</sub> = 10 kΩ / 100 = 100 Ω<br>V<sub>o</sub> = V<sub>i</sub> × 100 Ω / (1000 Ω + 100 Ω) = V<sub>i</sub> × 100/1100 ≈ 0.091 V<sub>i</sub>，只剩不到一成，後面的電路都收不到正確的電壓。<br>中間加一顆 buffer：訊號源只看到 OP 的 + 端（R<sub>i</sub> = ∞，不用出電流，V<sub>i</sub> 完整保留），100 個電路改由 OP 輸出（R<sub>o</sub> = 0）來推，每個都拿到 V<sub>i</sub>。</p>
+  <p class="note"><strong>筆記寫的「fan out ↑」是什麼意思：</strong>一個訊號源要同時推 100 個電路，這 100 個輸入電阻是<strong>並聯</strong>，總負載變得很小。假設每個電路輸入電阻 10 kΩ、R<sub>s</sub> = 1 kΩ。<br><strong>沒加 buffer（像左圖）：</strong><br>R<sub>L</sub> = 10 kΩ / 100 = 100 Ω<br>V<sub>o</sub> = V<sub>i</sub> × 100 Ω / (1000 Ω + 100 Ω) = V<sub>i</sub> × 100/1100 ≈ 0.091 V<sub>i</sub>，只剩不到一成，後面的電路都收不到正確的電壓。<br><strong>加了 buffer（像右圖）：</strong>訊號源只看到 OP 的 + 端（R<sub>i</sub> = ∞，不用出電流，V<sub>i</sub> 完整保留），100 個電路改由 OP 輸出（R<sub>o</sub> = 0）來推，每個都拿到 V<sub>i</sub>。</p>
   <aside class="fix">
     <b class="h">筆記勘誤（p.37）</b>
     <ul><li>筆記寫「過路費 I·R<sub>s</sub> = 0·R<sub>s</sub>，<strong>R<sub>s</sub> = 0</strong>」。R<sub>s</sub> 本身不是 0，是 <strong>R<sub>s</sub> 上的壓降</strong>為 0：<span class="m">V<sub>Rs</sub> = I·R<sub>s</sub> = 0·R<sub>s</sub> = 0</span>。</li><li>對照新的白板照片：老師寫的是「I·R<sub>s</sub> = 0·R<sub>s</sub>」，下一行「= 0」，再下面那個「R<sub>s</sub>」其實是電阻的標籤。抄的時候兩個黏在一起，就變成「R<sub>s</sub> = 0」了。</li></ul>
