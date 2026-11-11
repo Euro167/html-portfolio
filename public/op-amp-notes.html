@@ -889,7 +889,7 @@ html{scroll-behavior:smooth}
       <text x="240" y="186" class="vs-t sm">V<tspan dy="4" font-size="10">x</tspan></text>
       <path class="cur" d="M84 184 H116" marker-end="url(#arr)"/><text x="100" y="206" class="zh cur-t" text-anchor="middle">①</text>
       <path class="cur" d="M192 184 V214" marker-end="url(#arr)"/><text x="196" y="234" class="cur-t sm">I<tspan dy="4" font-size="10">L</tspan></text>
-      <path class="cur" d="M325 278 H355" marker-end="url(#arr)"/><text x="316" y="283" class="zh cur-t" text-anchor="end">②</text>
+      <path class="cur" style="stroke-dasharray:4 3" d="M325 278 H355" marker-end="url(#arr)"/><text x="316" y="283" class="zh cur-t" text-anchor="end">② 假設方向</text>
       <text x="30" y="170" text-anchor="end">V<tspan dy="4" font-size="11">i</tspan></text>
       <text x="100" y="150" text-anchor="middle">R</text>
       <text x="148" y="203" text-anchor="end">R<tspan dy="4" font-size="11">L</tspan></text>
@@ -898,14 +898,14 @@ html{scroll-behavior:smooth}
       <text x="330" y="15" text-anchor="middle">r<tspan dy="4" font-size="11">2</tspan></text>
       <text x="492" y="135">V<tspan dy="4" font-size="11">o</tspan></text>
     </svg>
-    <figcaption><b>藍色虛線框</b>就是「等效成 −R」的那一塊：OP、r<sub>1</sub>、r<sub>2</sub> 和下方回授 R 全部算在一起。它只有一個接點露在框外，就是 + 端那條線（藍色箭頭）。站在箭頭的位置往框裡看，整塊的電壓和電流關係就跟一顆 −R 的電阻一樣。<br>上方 r<sub>1</sub>、r<sub>2</sub> 把輸出接回 − 端（負回授）；下方 R 把輸出接回 + 端（正回授）。① 是從 V<sub>i</sub> 流進來的電流，② 是從 + 端流向 V<sub>o</sub> 的電流。<br>R<sub>L</sub> 上那支斜箭頭是<strong>可變電阻</strong>的符號（阻值可以調），白板就是這樣畫的，用來表示 R<sub>L</sub> 調成多少，I<sub>L</sub> 都一樣。</figcaption>
+    <figcaption><b>藍色虛線框</b>就是「等效成 −R」的那一塊：OP、r<sub>1</sub>、r<sub>2</sub> 和下方回授 R 全部算在一起。它只有一個接點露在框外，就是 + 端那條線（藍色箭頭）。站在箭頭的位置往框裡看，整塊的電壓和電流關係就跟一顆 −R 的電阻一樣。<br>上方 r<sub>1</sub>、r<sub>2</sub> 把輸出接回 − 端（負回授）；下方 R 把輸出接回 + 端（正回授）。① 是從 V<sub>i</sub> 流進來的電流。<br><strong>② 的紅色虛線箭頭是「假設方向」</strong>（白板就是這樣假設的：從 + 端流向 V<sub>o</sub>）。算出來 ② = −V<sub>o</sub>/(2R)，是<strong>負的</strong>，代表實際電流跟箭頭相反：從 V<sub>o</sub> 流回 + 端。黃點畫的是實際方向，所以跟箭頭反著跑。<br>R<sub>L</sub> 上那支斜箭頭是<strong>可變電阻</strong>的符號（阻值可以調），白板就是這樣畫的，用來表示 R<sub>L</sub> 調成多少，I<sub>L</sub> 都一樣。</figcaption>
   </figure>
   <h3>電路怎麼 work</h3>
   <ol class="steps">
     <li><div>這個電路同時有負回授（經 r<sub>2</sub> 回 − 端）和正回授（經 R 回 + 端）。「回授比例」指輸出電壓 V<sub>o</sub> 經過電阻分壓後，有幾成回到輸入腳。負回授：V<sub>o</sub> 經 r<sub>2</sub>、r<sub>1</sub> 分壓回到 − 腳，比例 = r<sub>1</sub>/(r<sub>1</sub> + r<sub>2</sub>)，r<sub>1</sub> = r<sub>2</sub> 時 = 1/2。正回授：V<sub>o</sub> 經回授 R 回到 + 腳，+ 腳到地之間還有 R<sub>L</sub> 和輸入 R 並聯（記作 R∥R<sub>L</sub> = R·R<sub>L</sub>/(R + R<sub>L</sub>)，一定比 R 小），比例 = (R∥R<sub>L</sub>)/(R + R∥R<sub>L</sub>)，一定小於 1/2。負回授比例比較大，整體還是負回授，所以<span class="g">虛短路</span>仍可用。</div></li>
     <li><div>令 r<sub>1</sub> = r<sub>2</sub> = r。<span class="r">虛斷路</span> → r<sub>1</sub>、r<sub>2</sub> 串聯分壓 → − 端電壓 <span class="m">V<sub>x</sub> = V<sub>o</sub>/2</span>。</div></li>
     <li><div><span class="g">虛短路</span> → + 端（也就是 R<sub>L</sub> 上端）也是 <span class="m">V<sub>x</sub> = V<sub>o</sub>/2</span>，換句話說 <span class="m">V<sub>o</sub> = 2V<sub>x</sub></span>。</div></li>
-    <li><div>① 流過輸入 R：<span class="m">(V<sub>i</sub> − V<sub>x</sub>)/R</span>；② 流過回授 R（從 + 端流向 V<sub>o</sub>）：<span class="m">(V<sub>x</sub> − V<sub>o</sub>)/R</span>。</div></li>
+    <li><div>① 流過輸入 R：<span class="m">(V<sub>i</sub> − V<sub>x</sub>)/R</span>；② 流過回授 R，先假設從 + 端流向 V<sub>o</sub>：<span class="m">(V<sub>x</sub> − V<sub>o</sub>)/R</span>。下面會算出它是負的，也就是實際上電流是從 V<sub>o</sub> 流回 + 端（圖上黃點的方向）。</div></li>
     <li><div>+ 端 KCL（OP 不吃電流）：流進 = ①，流出 = I<sub>L</sub> + ② → <span class="m">I<sub>L</sub> = ① − ②</span>。</div></li>
   </ol>
   <div class="deriv">
