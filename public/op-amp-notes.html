@@ -171,8 +171,8 @@ html{scroll-behavior:smooth}
       <use href="#cap" x="150" y="45"/>
       <use href="#dio" x="270" y="45"/>
       <path class="w" d="M410 22 V32"/><use href="#gnd" x="410" y="32"/>
-      <text x="50" y="82" class="zh" text-anchor="middle">電阻 R</text><text x="50" y="100" class="zh sm mut" text-anchor="middle">擋電流（像細水管）</text>
-      <text x="170" y="82" class="zh" text-anchor="middle">電容 C</text><text x="170" y="100" class="zh sm mut" text-anchor="middle">存電荷（像水箱）</text>
+      <text x="50" y="82" class="zh" text-anchor="middle">電阻 R</text><text x="50" y="100" class="zh sm mut" text-anchor="middle">V = I·R</text>
+      <text x="170" y="82" class="zh" text-anchor="middle">電容 C</text><text x="170" y="100" class="zh sm mut" text-anchor="middle">i = C·dV/dt</text>
       <text x="290" y="82" class="zh" text-anchor="middle">二極體 D</text><text x="290" y="100" class="zh sm mut" text-anchor="middle">電流只能往尖端走</text>
       <text x="410" y="82" class="zh" text-anchor="middle">接地</text><text x="410" y="100" class="zh sm mut" text-anchor="middle">電壓 = 0 V（基準點）</text>
       <path class="w" d="M54 150 H90"/><circle class="term" cx="50" cy="150" r="4"/>
@@ -188,22 +188,54 @@ html{scroll-behavior:smooth}
     </svg>
   </figure>
 
-  <div class="baby">
-    <span class="tag">機械系翻譯：把電路想成水管</span>
-    <div class="tablewrap" style="border:none">
-      <table class="mini">
-        <thead><tr><th>電子學</th><th>水管系統</th></tr></thead>
-        <tbody>
-          <tr><td>電壓 V</td><td>水壓（壓力差才會推水流動）</td></tr>
-          <tr><td>電流 I</td><td>水的流量</td></tr>
-          <tr><td>電阻 R</td><td>細水管／閥門：越細越難流，V = I·R 就像「壓降 = 流量 × 阻力」</td></tr>
-          <tr><td>接地 0 V</td><td>大氣壓／海平面：大家量壓力的基準</td></tr>
-          <tr><td>電容 C</td><td>水箱：水位就是電壓，進水流量就是電流，所以水位變化率 = 流量 / 截面積（dV/dt = i/C）</td></tr>
-          <tr><td>OP</td><td>一個超靈敏的自動閥門：只看兩根輸入管的壓力差，差一點點就把輸出開到最大</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
+  <h3>基本名詞：後面每個推導都會用到</h3>
+  <dl class="role">
+    <dt>電壓 V</dt><dd>單位伏特（V）。說「某個點是 2 V」，意思是這個點比接地（0 V）高 2 V。電壓永遠是「兩點之間」的差，只寫一個點時，另一點預設是地。</dd>
+    <dt>電流 I</dt><dd>單位安培（A），1 mA = 0.001 A。流過電阻時，電流一定是從電壓<strong>高</strong>的那端流向電壓<strong>低</strong>的那端。</dd>
+    <dt>接地</dt><dd>定義為 0 V 的點，電路裡所有電壓都以它為基準。電路圖上的接地符號全部是同一個點。</dd>
+    <dt>節點</dt><dd>用導線（沒有元件）連在一起的地方。同一個節點上每一點電壓都一樣。</dd>
+  </dl>
+
+  <h3>歐姆定律：電阻上的電流怎麼算</h3>
+  <p>電阻兩端的電壓差 = 流過的電流 × 電阻，也就是 <span class="m">V = I·R</span>。反過來寫成求電流：</p>
+  <div class="deriv"><div class="eq res"><i>I</i> = <span class="fr"><span>（高端電壓）−（低端電壓）</span><span><i>R</i></span></span></div></div>
+  <figure>
+    <svg class="ckt" viewBox="0 0 460 125" role="img" aria-label="歐姆定律例子">
+      <path class="w" d="M80 60 H190 M230 60 H340"/>
+      <use href="#res" x="190" y="60"/>
+      <circle class="dot" cx="80" cy="60" r="4"/><circle class="dot" cx="340" cy="60" r="4"/>
+      <text x="80" y="40" class="zh" text-anchor="middle">A 點：5 V</text>
+      <text x="340" y="40" class="zh" text-anchor="middle">B 點：2 V</text>
+      <text x="210" y="38" class="zh" text-anchor="middle">R = 1 kΩ</text>
+      <path class="cur" d="M180 84 H240" marker-end="url(#arr)"/>
+      <text x="210" y="112" class="zh cur-t" text-anchor="middle">I = (5 V − 2 V) / 1000 Ω = 0.003 A = 3 mA</text>
+    </svg>
+    <figcaption>A 比 B 高，所以電流從 A 往 B 流。後面推導裡的 (V<sub>i</sub> − 0)/R<sub>1</sub>，就是「左端 V<sub>i</sub>、右端 0 V」代進這條公式</figcaption>
+  </figure>
+  <p class="note"><strong>電流方向可以先假設：</strong>寫式子時可以先隨便決定電流往哪個方向，照「假設的起點電壓 − 終點電壓」去寫。算出來是負的，代表實際方向跟假設相反，式子本身還是對的。正相放大器的 (0 − V<sub>i</sub>)/R<sub>1</sub> 就是這樣寫出來的。</p>
+
+  <h3>KCL：節點的電流守恆</h3>
+  <p>流進一個節點的電流總和 = 流出這個節點的電流總和。電荷不會在節點憑空消失或堆積。</p>
+  <figure>
+    <svg class="ckt" viewBox="0 0 460 165" role="img" aria-label="KCL 例子">
+      <path class="w" d="M90 80 H370 M230 20 V80"/>
+      <circle class="dot" cx="230" cy="80" r="4"/>
+      <path class="cur" d="M120 96 H190" marker-end="url(#arr)"/>
+      <path class="cur" d="M246 24 V62" marker-end="url(#arr)"/>
+      <path class="cur" d="M270 96 H340" marker-end="url(#arr)"/>
+      <text x="155" y="118" class="zh cur-t" text-anchor="middle">流進 i₁ = 3 mA</text>
+      <text x="256" y="44" class="zh cur-t">流進 i₂ = 2 mA</text>
+      <text x="305" y="118" class="zh cur-t" text-anchor="middle">流出 i₃ = ?</text>
+      <text x="230" y="152" class="zh" text-anchor="middle">i₃ = i₁ + i₂ = 3 mA + 2 mA = 5 mA</text>
+    </svg>
+    <figcaption>OP 電路的推導，幾乎都是在 − 端那個節點寫這條式子</figcaption>
+  </figure>
+
+  <h3>另外兩個元件的公式</h3>
+  <dl class="role">
+    <dt>電容 C</dt><dd><span class="m">i = C·dV/dt</span>：電容的電流跟「它兩端電壓變化的速度」成正比。電壓變得越快，電流越大；電壓固定不變時，電流 = 0。積分器、微分器用的就是這條。</dd>
+    <dt>二極體 D</dt><dd>電流只能往三角形尖端的方向流（順向）。順向時 <span class="m">I = I<sub>s</sub>(e<sup>V/nV<sub>T</sub></sup> − 1)</span>，電壓多一點點，電流就呈指數增加；反向時電流幾乎是 0。指數放大器用的就是這條。</dd>
+  </dl>
 
   <h3>OP 本身在做什麼</h3>
   <p>OP 本身就是一個「增益超大的差動放大器」：它只看兩個輸入端的電壓差，然後放大 <span class="m">A<sub>v</sub></span> 倍。</p>
@@ -277,12 +309,14 @@ html{scroll-behavior:smooth}
       <figcaption><b class="r">正回授 ✗</b><br>輸出繞回 <strong>+</strong> 端。越偏越推得更遠，最後飽和，不能用虛短路。</figcaption>
     </figure>
   </div>
-  <div class="baby">
-    <span class="tag">生活類比</span>
-    <p><strong>負回授＝冷氣恆溫／汽車定速巡航：</strong>太熱就開大、太冷就關小，「偏多少就往反方向拉回多少」，所以會穩定在目標值。</p>
-    <p><strong>正回授＝麥克風對著喇叭：</strong>聲音被放大又收進麥克風再放大，「偏一點就推更遠」，最後變成刺耳的嘯叫（＝飽和）。</p>
-    <p class="note" style="border:none;padding:0">如果你修過自動控制：負回授就是「誤差 = 目標 − 實際」接回控制器。OP 的增益超大，所以穩態誤差幾乎是 0，這個「誤差 ≈ 0」就是下面的虛短路。</p>
-  </div>
+  <h3>負回授為什麼會穩定：沿著電路一步一步推</h3>
+  <p>用上面中間那張負回授圖（+ 端接輸入 V<sub>i</sub>，輸出直接接回 − 端，所以 v<sup>−</sup> 永遠等於 V<sub>o</sub>）。OP 的公式是 V<sub>o</sub> = A<sub>v</sub>(v<sup>+</sup> − v<sup>−</sup>)：</p>
+  <ol class="steps">
+    <li><div>假設 V<sub>o</sub> 不小心變大一點 → v<sup>−</sup> 跟著變大（它就是 V<sub>o</sub>）→ (v<sup>+</sup> − v<sup>−</sup>) 變小 → 乘上 A<sub>v</sub> 後 V<sub>o</sub> 變小 → <strong>被拉回來</strong>。</div></li>
+    <li><div>假設 V<sub>o</sub> 不小心變小一點 → v<sup>−</sup> 變小 → (v<sup>+</sup> − v<sup>−</sup>) 變大 → V<sub>o</sub> 變大 → <strong>被推回來</strong>。</div></li>
+    <li><div>不管往哪邊偏，都會被修正回來，所以輸出會停在一個固定值。停下來的時候 v<sup>+</sup> 和 v<sup>−</sup> 幾乎相等（下面的虛短路用數字驗證給你看）。</div></li>
+  </ol>
+  <p>換成<strong>正回授</strong>（輸出接回 + 端）：V<sub>o</sub> 變大一點 → v<sup>+</sup> 變大 → (v<sup>+</sup> − v<sup>−</sup>) 變大 → V<sub>o</sub> 再變大 → 一路衝到 +V<sub>sat</sub> 才停。輸出只會停在 ±V<sub>sat</sub>，這時 v<sup>+</sup> ≠ v<sup>−</sup>，所以不能用虛短路。</p>
 
   <h3>法寶一：虛斷路（管電流）</h3>
   <p>理想 OP 的輸入電阻 <span class="m">R<sub>i</sub> = ∞</span>。電阻無限大＝管子完全堵死，所以<strong>沒有任何電流能流進 OP 的兩隻輸入腳</strong>：<span class="m g">i<sup>+</sup> = i<sup>−</sup> = 0</span>。你筆記寫的「撞牆」就是這個意思。</p>
