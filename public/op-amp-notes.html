@@ -12,7 +12,7 @@
 /* Layout: single reading column on engineering-grid paper; each circuit = schematic plate + "how it works" steps + full derivation + errata callout */
 :root{
   --bg:#eef2f1; --paper:#fbfcfc; --ink:#18212b; --muted:#5a6770; --line:#cfd8d6; --grid:#e3e9e8;
-  --accent:#1d5b86; --vs:#17845a; --cur:#c43d2b; --warn-bg:#fff2dc; --warn-ink:#7f4700; --warn-line:#e9b765;
+  --accent:#1d5b86; --flow:#d49a00; --vs:#17845a; --cur:#c43d2b; --warn-bg:#fff2dc; --warn-ink:#7f4700; --warn-line:#e9b765;
   --f-display:"Noto Serif TC","Songti TC",serif;
   --f-body:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;
   --f-math:"STIX Two Text","Times New Roman",serif;
@@ -20,10 +20,10 @@
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
   --bg:#0f1517; --paper:#151d20; --ink:#e2e9eb; --muted:#93a2a9; --line:#2b383d; --grid:#1b2528;
-  --accent:#86bde3; --vs:#5fd39d; --cur:#ff7b67; --warn-bg:#2a2214; --warn-ink:#f2c47e; --warn-line:#7a5a26; color-scheme:dark}}
+  --accent:#86bde3; --flow:#ffd23f; --vs:#5fd39d; --cur:#ff7b67; --warn-bg:#2a2214; --warn-ink:#f2c47e; --warn-line:#7a5a26; color-scheme:dark}}
 :root[data-theme="dark"]{
   --bg:#0f1517; --paper:#151d20; --ink:#e2e9eb; --muted:#93a2a9; --line:#2b383d; --grid:#1b2528;
-  --accent:#86bde3; --vs:#5fd39d; --cur:#ff7b67; --warn-bg:#2a2214; --warn-ink:#f2c47e; --warn-line:#7a5a26; color-scheme:dark}
+  --accent:#86bde3; --flow:#ffd23f; --vs:#5fd39d; --cur:#ff7b67; --warn-bg:#2a2214; --warn-ink:#f2c47e; --warn-line:#7a5a26; color-scheme:dark}
 
 *{box-sizing:border-box}
 body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.75;
@@ -41,6 +41,7 @@ header{display:flex;flex-direction:column;gap:14px;padding-top:8px}
 .legend span{display:inline-flex;align-items:center;gap:8px}
 .sw{width:26px;height:0;border-top:2.5px dashed var(--vs)}
 .sw.cur{border-top:2.5px solid var(--cur)}
+.sw.dotflow{width:10px;height:10px;border:none;border-radius:50%;background:var(--flow)}
 .sw.fix{width:14px;height:14px;border:2px solid var(--warn-line);background:var(--warn-bg);border-radius:3px}
 nav.toc{display:flex;flex-wrap:wrap;gap:8px}
 nav.toc a{font-size:.88rem;text-decoration:none;color:var(--ink);border:1px solid var(--line);background:var(--paper);padding:4px 11px;border-radius:999px}
@@ -121,6 +122,11 @@ td a{color:var(--accent);text-decoration:none;font-weight:500}
 .ckt .box-a{fill:none;stroke:var(--accent);stroke-width:1.8;stroke-dasharray:7 5}
 .ckt .acc{fill:none;stroke:var(--accent);stroke-width:2}
 .ckt text.acc-t{fill:var(--accent);font-weight:700}
+.ckt .flow-dot{fill:var(--flow);stroke:var(--paper);stroke-width:1}
+.noflow .ckt .flow{display:none}
+.flowbtn{align-self:flex-start;font:inherit;font-size:.88rem;color:var(--ink);background:var(--paper);border:1px solid var(--flow);border-radius:999px;padding:4px 14px;cursor:pointer;display:inline-flex;align-items:center;gap:8px}
+.flowbtn::before{content:"";width:10px;height:10px;border-radius:50%;background:var(--flow)}
+.flowbtn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .ckt .wall{fill:none;stroke:var(--cur);stroke-width:6;stroke-linecap:butt}
 table.mini{min-width:0}
 .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
@@ -160,7 +166,10 @@ html{scroll-behavior:smooth}
     <span><i class="sw"></i>綠色虛線＝虛短路（兩點電壓相同）</span>
     <span><i class="sw cur"></i>紅色箭頭＝電流方向</span>
     <span><i class="sw fix"></i>筆記勘誤</span>
+    <span><i class="sw dotflow"></i>黃點＝電流在跑（假設 V<sub>i</sub> &gt; 0）</span>
   </div>
+  <button id="flowToggle" class="flowbtn" type="button" aria-pressed="true">電流動畫：開</button>
+  <p class="note">黃點代表電流（正電荷）的流動方向，假設輸入電壓 V<sub>i</sub> 是正的（微分器另外假設 V<sub>i</sub> 正在上升；減法器照該節例子 V<sub>1</sub> = 2 V、V<sub>2</sub> = 3 V）。<strong>沒有黃點的線就是沒有電流</strong>：例如 OP 的 + 腳、− 腳永遠沒有黃點跑進去（虛斷路）。電流可以從 OP 的輸出端流出或流進，那是 OP 自己的電源在供應。</p>
   <nav class="toc" aria-label="目錄">
     <a href="#basics">0 理想 OP 觀念</a><a href="#overview">公式總表</a><a href="#inv">1 反相放大</a><a href="#noninv">2 正相放大</a><a href="#buffer">3 電壓隨耦</a><a href="#sum">4 反相加法</a><a href="#diff">5 減法器</a><a href="#nic">6 負阻抗／定電流</a><a href="#int">7 積分</a><a href="#der">8 微分</a><a href="#exp">9 指數放大</a><a href="#errata">勘誤總整理</a>
   </nav>
@@ -205,7 +214,7 @@ html{scroll-behavior:smooth}
   <p>電阻兩端的電壓差 = 流過的電流 × 電阻，也就是 <span class="m">V = I·R</span>。反過來寫成求電流：</p>
   <div class="deriv"><div class="eq res"><i>I</i> = <span class="fr"><span>（高端電壓）−（低端電壓）</span><span><i>R</i></span></span></div></div>
   <figure>
-    <svg class="ckt" viewBox="0 0 460 125" role="img" aria-label="歐姆定律例子">
+    <svg class="ckt" viewBox="0 0 460 125" role="img" aria-label="歐姆定律例子" data-flow="M80 60 H340">
       <path class="w" d="M80 60 H190 M230 60 H340"/>
       <use href="#res" x="190" y="60"/>
       <circle class="dot" cx="80" cy="60" r="4"/><circle class="dot" cx="340" cy="60" r="4"/>
@@ -222,7 +231,7 @@ html{scroll-behavior:smooth}
   <h3>KCL：節點的電流守恆</h3>
   <p>流進一個節點的電流總和 = 流出這個節點的電流總和。電荷不會在節點憑空消失或堆積。</p>
   <figure>
-    <svg class="ckt" viewBox="0 0 460 165" role="img" aria-label="KCL 例子">
+    <svg class="ckt" viewBox="0 0 460 165" role="img" aria-label="KCL 例子" data-flow="M90 80 H370|M230 20 V80 H370">
       <path class="w" d="M90 80 H370 M230 20 V80"/>
       <circle class="dot" cx="230" cy="80" r="4"/>
       <path class="cur" d="M120 96 H190" marker-end="url(#arr)"/>
@@ -248,7 +257,7 @@ html{scroll-behavior:smooth}
   <h3>輸入阻抗：「從某一點看進去」是什麼意思</h3>
   <p>在電路的某個接點外加一個測試電壓 V，量流進去的電流 I。V 除以 I 就是從這一點「看進去」的電阻，叫<strong>輸入阻抗</strong>：<span class="m">R<sub>in</sub> = V / I</span>。不管裡面接了多複雜的東西，對外面來說它就跟一顆 R<sub>in</sub> 的電阻效果一樣，這就是「等效」。</p>
   <figure>
-    <svg class="ckt" viewBox="0 0 460 150" role="img" aria-label="輸入阻抗的定義">
+    <svg class="ckt" viewBox="0 0 460 150" role="img" aria-label="輸入阻抗的定義" data-flow="M100 77 V60 H216">
       <circle class="w" cx="100" cy="95" r="18"/>
       <text x="100" y="91" class="sm" text-anchor="middle">+</text><text x="100" y="109" class="sm" text-anchor="middle">−</text>
       <path class="w" d="M100 77 V60 H216 M100 113 V122"/>
@@ -268,7 +277,7 @@ html{scroll-behavior:smooth}
   <h3>輸出阻抗：輸出端內部的電阻</h3>
   <p>任何輸出都可以看成「一個內部電壓源串一顆電阻 R<sub>o</sub>」。接上負載後有電流 I<sub>L</sub>，R<sub>o</sub> 上會掉 I<sub>L</sub>·R<sub>o</sub> 的電壓，所以輸出電壓會變低。</p>
   <figure>
-    <svg class="ckt" viewBox="0 0 500 165" role="img" aria-label="輸出阻抗的定義">
+    <svg class="ckt" viewBox="0 0 500 165" role="img" aria-label="輸出阻抗的定義" data-flow="M80 70 V40 H300 V110">
       <circle class="w" cx="80" cy="90" r="20"/>
       <text x="80" y="86" class="sm" text-anchor="middle">+</text><text x="80" y="104" class="sm" text-anchor="middle">−</text>
       <path class="w" d="M80 70 V40 H150 M190 40 H300 M300 40 V60 M300 100 V110 M80 110 V120"/>
@@ -383,7 +392,7 @@ html{scroll-behavior:smooth}
   <h3>法寶一：虛斷路（管電流）</h3>
   <p>理想 OP 兩個輸入腳之間的輸入電阻 <span class="m">R<sub>i</sub> = ∞</span>。代入歐姆定律 I = V/R<sub>i</sub> = V/∞ = 0，不管電壓多少，電流都是 0，所以<strong>沒有任何電流能流進 OP 的兩隻輸入腳</strong>：<span class="m g">i<sup>+</sup> = i<sup>−</sup> = 0</span>。你筆記寫的「撞牆」就是這個意思。</p>
   <figure>
-    <svg class="ckt" viewBox="0 0 460 220" role="img" aria-label="虛斷路示意：電流撞牆後改走回授電阻">
+    <svg class="ckt" viewBox="0 0 460 220" role="img" aria-label="虛斷路示意：電流撞牆後改走回授電阻" data-flow="M44 95 H190 V30 H380 V130 H350">
       <use href="#op" x="220" y="60"/>
       <path class="w" d="M44 95 H90 M130 95 H220 M190 95 V30 H250 M290 30 H380 V130 M350 130 H416 M220 165 H190 V178"/>
       <use href="#res" x="90" y="95"/><use href="#res" x="250" y="30"/><use href="#gnd" x="190" y="178"/>
@@ -503,7 +512,7 @@ html{scroll-behavior:smooth}
     <dt>原理</dt><dd>虛接地 ＋ 虛斷路：R<sub>1</sub> 的電流進不了 OP，只能全部流過 R<sub>2</sub>。</dd>
   </dl>
   <figure>
-    <svg class="ckt" viewBox="0 0 460 220" role="img" aria-label="反相放大器電路">
+    <svg class="ckt" viewBox="0 0 460 220" role="img" aria-label="反相放大器電路" data-flow="M64 95 H190 V30 H380 V130 H350">
       <use href="#op" x="220" y="60"/>
       <path class="w" d="M64 95 H110 M150 95 H220 M190 95 V30 H250 M290 30 H380 V130 M350 130 H416 M220 165 H190 V178"/>
       <use href="#res" x="110" y="95"/><use href="#res" x="250" y="30"/><use href="#gnd" x="190" y="178"/>
@@ -553,7 +562,7 @@ html{scroll-behavior:smooth}
     <dt>原理</dt><dd>訊號直接進 + 端，虛短路把 − 端也拉到 V<sub>i</sub>；R<sub>1</sub>、R<sub>2</sub> 其實是一個分壓器。</dd>
   </dl>
   <figure>
-    <svg class="ckt" viewBox="0 0 460 220" role="img" aria-label="正相放大器電路">
+    <svg class="ckt" viewBox="0 0 460 220" role="img" aria-label="正相放大器電路" data-flow="M350 130 H380 V30 H190 V95 H70 V105">
       <use href="#op" x="220" y="60"/>
       <path class="w" d="M64 165 H220 M220 95 H150 M110 95 H70 V105 M190 95 V30 H250 M290 30 H380 V130 M350 130 H416"/>
       <use href="#res" x="110" y="95"/><use href="#res" x="250" y="30"/><use href="#gnd" x="70" y="105"/>
@@ -606,7 +615,7 @@ html{scroll-behavior:smooth}
     <dt>原理</dt><dd>輸出整條接回 − 端（100% 負回授），虛短路直接讓 V<sub>o</sub> = V<sub>i</sub>。</dd>
   </dl>
   <figure>
-    <svg class="ckt" viewBox="0 0 470 220" role="img" aria-label="電壓隨耦器電路">
+    <svg class="ckt" viewBox="0 0 470 220" role="img" aria-label="電壓隨耦器電路" data-flow="M350 130 H410 V190">
       <use href="#op" x="220" y="60"/>
       <path class="w" d="M44 165 H80 M120 165 H220 M220 95 H190 V30 H380 V130 M350 130 H436 M410 130 V145 M410 185 V190"/>
       <use href="#res" x="80" y="165"/>
@@ -643,7 +652,7 @@ html{scroll-behavior:smooth}
   <p>「V 不受 R<sub>L</sub> 影響」是 buffer 的<strong>好處</strong>。老師為了說明這個好處，先畫了<strong>沒有 buffer</strong> 的情況給你看（下面第一張，筆記裡叫「左圖」）：這時候 V<sub>o</sub> 會被 R<sub>L</sub> 拉低。加上 buffer（第二張，「右圖」）之後就不會了。所以下面的「分壓」講的是<strong>左圖、沒加 buffer</strong> 的壞處，不是 buffer 本身。</p>
   <div style="display:flex;flex-direction:column;gap:14px">
     <figure>
-      <svg class="ckt" style="max-width:360px" viewBox="0 0 300 200" role="img" aria-label="沒有 buffer：電源經 Rs 直接接 RL">
+      <svg class="ckt" style="max-width:360px" viewBox="0 0 300 200" role="img" aria-label="沒有 buffer：電源經 Rs 直接接 RL" data-flow="M50 92 V50 H200 V125">
         <circle class="w" cx="50" cy="110" r="18"/>
         <text x="50" y="106" class="sm" text-anchor="middle">+</text><text x="50" y="124" class="sm" text-anchor="middle">−</text>
         <path class="w" d="M50 92 V50 H90 M130 50 H250 M200 50 V75 M200 115 V125 M50 128 V140"/>
@@ -661,7 +670,7 @@ html{scroll-behavior:smooth}
       <figcaption><b class="r">左圖：沒加 buffer ✗</b><br>R<sub>s</sub> 和 R<sub>L</sub> 串在同一條路上，形成分壓</figcaption>
     </figure>
     <figure>
-      <svg class="ckt" viewBox="0 0 470 240" role="img" aria-label="加了 buffer：電源經 Rs 接 OP 正端，OP 輸出推 RL">
+      <svg class="ckt" viewBox="0 0 470 240" role="img" aria-label="加了 buffer：電源經 Rs 接 OP 正端，OP 輸出推 RL" data-flow="M350 130 H410 V190">
         <use href="#op" x="220" y="60"/>
         <circle class="w" cx="36" cy="190" r="16"/>
         <text x="36" y="187" class="sm" text-anchor="middle">+</text><text x="36" y="203" class="sm" text-anchor="middle">−</text>
@@ -709,7 +718,7 @@ html{scroll-behavior:smooth}
     <dt>原理</dt><dd>− 端是虛接地 0 V，所以每個輸入的電流各算各的、互不干擾，在節點匯合後全部流過 R<sub>f</sub>。</dd>
   </dl>
   <figure>
-    <svg class="ckt" viewBox="0 0 460 220" role="img" aria-label="反相加法器電路">
+    <svg class="ckt" viewBox="0 0 460 220" role="img" aria-label="反相加法器電路" data-flow="M54 95 H190 V30 H380 V130 H350|M54 140 H170 V95 H190 V30 H380 V130 H350">
       <use href="#op" x="220" y="60"/>
       <path class="w" d="M54 95 H90 M130 95 H220 M54 140 H90 M130 140 H170 V95 M190 95 V30 H250 M290 30 H380 V130 M350 130 H416 M220 165 H195 V178"/>
       <use href="#res" x="90" y="95"/><use href="#res" x="90" y="140"/><use href="#res" x="250" y="30"/><use href="#gnd" x="195" y="178"/>
@@ -777,7 +786,7 @@ html{scroll-behavior:smooth}
   </dl>
 
   <figure>
-    <svg class="ckt" viewBox="0 0 460 250" role="img" aria-label="減法器電路">
+    <svg class="ckt" viewBox="0 0 460 250" role="img" aria-label="減法器電路" data-flow="M54 95 H190 V30 H380 V130 H350|M54 165 H160 V225">
       <use href="#op" x="220" y="60"/>
       <path class="w" d="M54 95 H90 M130 95 H220 M190 95 V30 H250 M290 30 H380 V130 M350 130 H416 M54 165 H90 M130 165 H220 M160 165 V180 M160 220 V225"/>
       <use href="#res" x="90" y="95"/><use href="#res" x="250" y="30"/><use href="#res" x="90" y="165"/>
@@ -860,7 +869,7 @@ html{scroll-behavior:smooth}
     <dt>原理</dt><dd>r<sub>1</sub>、r<sub>2</sub> 分壓決定 − 端電壓，虛短路把 + 端也鎖在同一個電壓，再對 + 端寫 KCL。</dd>
   </dl>
   <figure>
-    <svg class="ckt" viewBox="0 -12 520 312" role="img" aria-label="負阻抗轉換器／定電流源電路">
+    <svg class="ckt" viewBox="0 -12 520 312" role="img" aria-label="負阻抗轉換器／定電流源電路" data-flow="M44 165 H170 V225|M410 130 H440 V260 H230 V165 H170 V225|M410 130 H440 V30 H250 V95 H110 V103">
       <path class="box-a" d="M95 -4 H514 V294 H216 V126 H95 Z"/>
       <text x="102" y="20" class="zh acc-t">虛線框裡這一整塊 ＝ −R</text>
       <path class="acc" d="M194 150 H214" marker-end="url(#arrA)"/>
@@ -927,7 +936,7 @@ html{scroll-behavior:smooth}
   <p><strong>Norton 等效是什麼：</strong>「電壓源 V 串一顆電阻 R」可以換成「電流源 V/R 並聯同一顆 R」。兩種畫法對外面接的任何負載，給出的電壓、電流都完全一樣，只是換個角度看。<strong>電流源</strong>的符號是圓圈裡一個箭頭，表示它固定送出這麼多電流。</p>
   <p>把左邊的 V<sub>i</sub> 串 R 換成 Norton 形式，再把藍色虛線框換成一顆 −R，整個電路就變成下面這樣（全部並聯在 + 端那個節點和地之間）：</p>
   <figure>
-    <svg class="ckt" viewBox="0 0 460 210" role="img" aria-label="Norton 等效電路">
+    <svg class="ckt" viewBox="0 0 460 210" role="img" aria-label="Norton 等效電路" data-flow="M100 83 V40 H280 V170|M190 40 V170 H370 V40 Z">
       <path class="w" d="M100 40 H370 M100 170 H370 M100 40 V83 M100 127 V170 M190 40 V85 M190 125 V170 M280 40 V85 M280 125 V170 M370 40 V85 M370 125 V170 M235 170 V178"/>
       <circle class="w" cx="100" cy="105" r="22"/>
       <path class="w" d="M100 117 V94 M93 102 L100 93 L107 102"/>
@@ -966,7 +975,7 @@ html{scroll-behavior:smooth}
     <dt>原理</dt><dd>R 把電壓變成電流 V<sub>i</sub>/R，這個電流全部拿去給 C 充電；電容電壓 = 電流的累積。</dd>
   </dl>
   <figure>
-    <svg class="ckt" viewBox="0 0 460 220" role="img" aria-label="積分器電路">
+    <svg class="ckt" viewBox="0 0 460 220" role="img" aria-label="積分器電路" data-flow="M54 95 H190 V30 H380 V130 H350">
       <use href="#op" x="220" y="60"/>
       <path class="w" d="M54 95 H90 M130 95 H220 M190 95 V30 H265 M305 30 H380 V130 M350 130 H416 M220 165 H190 V178"/>
       <use href="#res" x="90" y="95"/><use href="#cap" x="265" y="30"/><use href="#gnd" x="190" y="178"/>
@@ -1030,7 +1039,7 @@ html{scroll-behavior:smooth}
     <dt>原理</dt><dd>電容只在電壓變化時有電流（i = C·dV/dt）；這個電流全部流過 R，在 R 上產生電壓。</dd>
   </dl>
   <figure>
-    <svg class="ckt" viewBox="0 0 460 220" role="img" aria-label="微分器電路">
+    <svg class="ckt" viewBox="0 0 460 220" role="img" aria-label="微分器電路" data-flow="M54 95 H190 V30 H380 V130 H350">
       <use href="#op" x="220" y="60"/>
       <path class="w" d="M54 95 H90 M130 95 H220 M190 95 V30 H250 M290 30 H380 V130 M350 130 H416 M220 165 H190 V178"/>
       <use href="#cap" x="90" y="95"/><use href="#res" x="250" y="30"/><use href="#gnd" x="190" y="178"/>
@@ -1086,7 +1095,7 @@ html{scroll-behavior:smooth}
     <dt>原理</dt><dd>二極體的電流跟電壓是指數關係；虛接地讓二極體電壓剛好 = V<sub>i</sub>，電流再經 R 變回電壓。</dd>
   </dl>
   <figure>
-    <svg class="ckt" viewBox="0 0 460 220" role="img" aria-label="指數放大器電路">
+    <svg class="ckt" viewBox="0 0 460 220" role="img" aria-label="指數放大器電路" data-flow="M54 95 H190 V30 H380 V130 H350">
       <use href="#op" x="220" y="60"/>
       <path class="w" d="M54 95 H90 M130 95 H220 M190 95 V30 H250 M290 30 H380 V130 M350 130 H416 M220 165 H190 V178"/>
       <use href="#dio" x="90" y="95"/><use href="#res" x="250" y="30"/><use href="#gnd" x="190" y="178"/>
@@ -1152,5 +1161,57 @@ html{scroll-behavior:smooth}
 </footer>
 
 </div>
+
+<script>
+(function () {
+  var NS = 'http://www.w3.org/2000/svg';
+  var SPEED = 55; // px per second in viewBox units
+  var GAP = 28;   // distance between dots
+  document.querySelectorAll('svg.ckt[data-flow]').forEach(function (svg) {
+    var g = document.createElementNS(NS, 'g');
+    g.setAttribute('class', 'flow');
+    svg.appendChild(g);
+    svg.getAttribute('data-flow').split('|').forEach(function (d) {
+      var path = document.createElementNS(NS, 'path');
+      path.setAttribute('d', d);
+      path.setAttribute('fill', 'none');
+      path.setAttribute('stroke', 'none');
+      g.appendChild(path);
+      var len = 200;
+      try { len = path.getTotalLength(); } catch (e) {}
+      var dur = len / SPEED;
+      var n = Math.max(2, Math.round(len / GAP));
+      for (var i = 0; i < n; i++) {
+        var c = document.createElementNS(NS, 'circle');
+        c.setAttribute('r', '3.6');
+        c.setAttribute('class', 'flow-dot');
+        var a = document.createElementNS(NS, 'animateMotion');
+        a.setAttribute('path', d);
+        a.setAttribute('dur', dur.toFixed(2) + 's');
+        a.setAttribute('begin', (-i * dur / n).toFixed(2) + 's');
+        a.setAttribute('repeatCount', 'indefinite');
+        c.appendChild(a);
+        g.appendChild(c);
+      }
+    });
+  });
+  var btn = document.getElementById('flowToggle');
+  var root = document.documentElement;
+  function set(on) {
+    root.classList.toggle('noflow', !on);
+    btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+    btn.textContent = on ? '電流動畫：開' : '電流動畫：關';
+    try { localStorage.setItem('flow', on ? '1' : '0'); } catch (e) {}
+  }
+  var on = true;
+  try {
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) on = false;
+    var saved = localStorage.getItem('flow');
+    if (saved !== null) on = saved === '1';
+  } catch (e) {}
+  set(on);
+  btn.addEventListener('click', function () { set(root.classList.contains('noflow')); });
+})();
+</script>
 </body>
 </html>
