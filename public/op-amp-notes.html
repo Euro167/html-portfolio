@@ -696,9 +696,33 @@ html{scroll-behavior:smooth}
 <section id="diff">
   <div class="sec-head"><span class="eyebrow">§5</span><h2>減法器（正反相加法器）</h2><span class="en">Difference amplifier / subtractor</span></div>
   <dl class="role">
-    <dt>作用</dt><dd>輸出跟兩個輸入的「差」成正比：<span class="m">V<sub>o</sub> ∝ (V<sub>2</sub> − V<sub>1</sub>)</span>。白板標題「正相加法器」上面補了一個「反」：一個訊號走反相端（帶負號）、一個走正相端（帶正號），加起來就是減法。</dd>
-    <dt>原理</dt><dd>重疊定理：V<sub>1</sub> 單獨看是反相放大器，V<sub>2</sub> 單獨看是「先分壓、再正相放大」，兩個結果相加。</dd>
+    <dt>作用</dt><dd>輸出<strong>只跟兩個輸入相差多少有關</strong>：<span class="m">V<sub>o</sub> = k(V<sub>2</sub> − V<sub>1</sub>)</span>，k = R<sub>f</sub>/R<sub>1</sub>。兩個輸入「一樣的部分」會被完全消掉，只有「不一樣的部分」被放大。</dd>
+    <dt>原理</dt><dd>V<sub>1</sub> 接在 − 端，對輸出的貢獻是負的（反相放大）；V<sub>2</sub> 接在 + 端，貢獻是正的（正相放大）。電阻選得讓兩個貢獻的<strong>大小剛好一樣</strong>，只差正負號，相加後就變成 k·V<sub>2</sub> − k·V<sub>1</sub>。</dd>
   </dl>
+
+  <h3>什麼時候需要它：量「兩點之間的電壓差」</h3>
+  <p>很多感測器的訊號不是「某一點對地的電壓」，而是「兩條線之間的電壓差」，而且這兩條線本身都帶著一個很大的共同電壓。應變規（strain gauge）的惠斯登電橋就是典型例子：</p>
+  <div class="deriv">
+    <span class="t">例：應變規電橋，電源 5 V</span>
+    <div class="eq">沒受力時：電橋兩個輸出 <i>V</i><sub>1</sub> = 2.500 V、<i>V</i><sub>2</sub> = 2.500 V</div>
+    <div class="eq">受力後：<i>V</i><sub>1</sub> = 2.500 V、<i>V</i><sub>2</sub> = 2.505 V<span class="why">真正的訊號只有 2.505 − 2.500 = 0.005 V</span></div>
+    <span class="t">做法一：只把 V₂ 放大 100 倍（正相放大器）</span>
+    <div class="eq"><i>V</i><sub>o</sub> = 100 × 2.505 V = 250.5 V<span class="why">遠超過 ±3 V → 直接飽和，量不到東西</span></div>
+    <span class="t">做法二：減法器，k = R<sub>f</sub>/R<sub>1</sub> = 100</span>
+    <div class="eq"><i>V</i><sub>o</sub> = 100 × (2.505 − 2.500) = 100 × 0.005 = 0.5 V<span class="why">2.5 V 的共同部分被消掉，只放大 0.005 V</span></div>
+    <div class="eq res">受力越大 → V₂ − V₁ 越大 → V<sub>o</sub> 越大，量出來的就是受力</div>
+  </div>
+  <p class="note">同樣的道理：兩條訊號線上如果混進一樣的雜訊（例如兩條線都多了 0.1 V），V<sub>2</sub> − V<sub>1</sub> 時雜訊也會被減掉。</p>
+
+  <h3>代數字看「一正一負」怎麼變成減法</h3>
+  <div class="deriv">
+    <span class="t">取白板條件 R<sub>f</sub> = R<sub>1</sub>、R<sub>2</sub> = R<sub>3</sub>；V<sub>1</sub> = 2 V、V<sub>2</sub> = 3 V</span>
+    <div class="eq">V₁ 的貢獻（走 − 端，反相放大 −R<sub>f</sub>/R<sub>1</sub> = −1 倍）：<i>V</i><sub>o1</sub> = −1 × 2 V = −2 V</div>
+    <div class="eq">V₂ 的貢獻（走 + 端）：先分壓 3 V × <span class="fr"><span>1</span><span>2</span></span> = 1.5 V，再正相放大 (1 + 1) = 2 倍 ⇒ <i>V</i><sub>o2</sub> = 2 × 1.5 V = 3 V</div>
+    <div class="eq">兩個貢獻相加：<i>V</i><sub>o</sub> = −2 V + 3 V = 1 V</div>
+    <div class="eq res">驗算：<i>V</i><sub>2</sub> − <i>V</i><sub>1</sub> = 3 V − 2 V = 1 V ✓</div>
+  </div>
+  <p class="note"><strong>為什麼 + 端要先分壓：</strong>正相放大器的倍數是 1 + R<sub>f</sub>/R<sub>1</sub>，一定比反相那邊的 R<sub>f</sub>/R<sub>1</sub> 多 1（這裡是 2 倍對 1 倍）。為了讓兩邊大小一樣，V<sub>2</sub> 要先用 R<sub>2</sub>、R<sub>3</sub> 砍成一半，2 × 1/2 = 1，才會跟 V<sub>1</sub> 那邊的 1 倍一樣大。</p>
   <figure>
     <svg class="ckt" viewBox="0 0 460 250" role="img" aria-label="減法器電路">
       <use href="#op" x="220" y="60"/>
